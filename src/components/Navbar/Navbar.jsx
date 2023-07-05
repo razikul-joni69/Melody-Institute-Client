@@ -49,8 +49,7 @@ const Navbar = () => {
                         <span className="badge badge-xs badge-primary indicator-item"></span>
                     </div>
                 </button>
-
-                <div className="dropdown dropdown-end">
+                <button className="btn btn-ghost btn-circle dropdown z-10">
                     <label tabIndex={0} className="btn btn-ghost btn-circle">
                         <div className="indicator">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -70,8 +69,10 @@ const Navbar = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </button>
+
                 <div className="dropdown dropdown-end">
+
                     <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
                             <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
@@ -89,6 +90,10 @@ const Navbar = () => {
                         <li><a>Settings</a></li>
                         <li><a>Logout</a></li>
                     </ul>
+                </div>
+                <div>
+                    <NavLink to="/login" className="btn btn-outline btn-success">Login</NavLink>
+                    <NavLink to="/register" className="btn btn-outline btn-success">Register</NavLink>
                 </div>
             </div>
         </div>
