@@ -65,7 +65,7 @@ const PopularInstructors = () => {
                                         <div className="flex justify-center">
                                             {
                                                 instructor.name_of_classes?.map(cls => <span
-                                                    className="mr-2 text-md ">{cls}</span>)
+                                                    className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{cls}</span>)
                                             }
                                         </div>
                                         <div className="flex justify-between my-2 gap-5">

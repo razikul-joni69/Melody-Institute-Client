@@ -64,7 +64,6 @@ const PopularClasses = () => {
                                             </ul>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <hr className="my-4"/>
@@ -82,11 +81,11 @@ const PopularClasses = () => {
                                 <div className="flex justify-between mb-2">
                                     <div className="flex items-center gap-1 text-[15px] text-gray-600">
                                         <BsBookHalf
-                                            className="text-red-700 text-[20px]"/> {cls.lessons} {cls.lessons.length > 1 ? "Lesson" : "Lesson's"}
+                                            className="text-red-700 text-[20px]"/> {cls.lessons} {cls.lessons > 1 ? "Lesson's" : "Lesson"}
                                     </div>
                                     <div className="flex items-center gap-1 text-[15px] text-gray-600">
                                         <FaUser
-                                            className="text-red-700 text-[20px]"/> {cls.enrolled_students} {cls.enrolled_students.length > 1 ? "Student's" : "Student"}
+                                            className="text-red-700 text-[20px]"/> {cls.enrolled_students} {cls.enrolled_students > 1 ? "Student's" : "Student"}
                                     </div>
                                 </div>
                                 <a href="#">
