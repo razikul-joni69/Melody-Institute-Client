@@ -1,54 +1,99 @@
-import { useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Providers/AuthProvider";
+import {useContext} from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {auth, AuthContext} from "../Providers/AuthProvider";
 import Loading from "../../../../Assignment-11/client/src/components/Loading/Loading.jsx";
-import { showErrorMessage, showSuccessMessage } from "../utils/Notification";
-
+import {showErrorMessage, showSuccessMessage} from "../utils/Notification";
+import {useForm} from "react-hook-form";
+import {updateProfile} from "firebase/auth";
+import login from "./Login.jsx";
+// {pattern: /^(?=.{6,}).*[A-Z].*[!@#$%^&*()_+-={}|;:'",.<>?].*$/}
 const Register = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    
+    const {
+        register, handleSubmit, reset, formState: {errors},
+    } = useForm()
+
     document.title = "TOYBOX | Register";
 
     const {
-        continueWithGoogle,
-        continueWithGithub,
-        continueWithFacebook,
-        emailPasswordUserCreate,
-        error,
-        setError,
-        loading,
+        continueWithGoogle, continueWithGithub, continueWithFacebook, emailPasswordUserCreate, error, setError, loading,
     } = useContext(AuthContext);
     const from = location.state?.from?.pathname || "/";
+    const onSubmit = async (data) => {
+        const imageUploadToken = import.meta.env.VITE_Image_Upload_Token;
+        const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageUploadToken}`
+        const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{7,}$/;
 
-    const handleRegister = (e) => {
-        e.preventDefault();
+        const formData = new FormData();
+        formData.append('image', data.photoURL[0]);
 
-        const name = e.target.name.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        const confirmPassword = e.target.confirm.value;
-        const photoURL = e.target.photoURL.value;
+        const userData = {
+            address: data?.address,
+            email: data?.email,
+            gender: data?.gender,
+            name: data?.name,
+            password: data?.password,
+            phone: data?.phone,
+            role: data?.role,
+        }
 
-        if (password !== confirmPassword) {
+        if (data.password !== data.confirm) {
             showErrorMessage("Password doesn't match confirm password!");
             return setError("Password doesn't match confirm password");
-        } else if (password.length < 6) {
+        } else if (data.password.length < 6) {
             showErrorMessage("Password must be at least 6 characters");
             return setError("Password must be at least 6 characters");
+        } else if (regex.test(data.password) === false) {
+            showErrorMessage("Password doesn't meet requirements. Password must have 6 or more character at least one Uppercase Letter and one Special character.");
+            return setError("Password doesn't meet requirements. Password must have 6 or more character at least one Uppercase Letter and one Special character.");
         } else {
-            emailPasswordUserCreate(email, password, name, photoURL);
-            navigate(from);
-            e.target.reset();
+            try {
+                setError("")
+                await fetch(imageHostingUrl, {
+                    method: "POST", body: formData
+                })
+                    .then(res => res.json())
+                    .then(img => {
+                        if (img.status === 200) {
+                            userData.photoURL = img?.data?.display_url;
+
+                            emailPasswordUserCreate(userData.email, userData.password)
+                                .then((res) => {
+                                    updateProfile(auth.currentUser, {
+                                        displayName: userData?.name,
+                                        photoURL: userData.photoURL,
+                                    })
+                                        .then(() => {
+                                        })
+                                        .catch((err) => {
+                                            setError(`📈 ${err.message}`);
+                                            showErrorMessage("🚫 User Profile not updated!")
+                                        });
+                                    showSuccessMessage("🦸 User Created Successfully!");
+                                    navigate(from);
+                                    reset()
+                                })
+                                .catch((err) => {
+                                    setError(err.message);
+                                    showErrorMessage(err.message);
+                                });
+                        }
+                    })
+            } catch (err) {
+                setError(err.message);
+                showErrorMessage(err.message);
+            }
+
         }
-    };
+    }
 
     const handleGoogleLogin = () => {
         continueWithGoogle()
             .then(() => {
                 setError("");
-                showSuccessMessage("👍 Google Register Successfull!");
-                navigate(from, { replace: true });
+                showSuccessMessage("👍 Google Register Successfully!");
+                navigate(from, {replace: true});
             })
             .catch((err) => {
                 setError(err.message);
@@ -60,8 +105,8 @@ const Register = () => {
         continueWithGithub()
             .then(() => {
                 setError("");
-                showSuccessMessage("👍 Github Register Successfull!");
-                navigate(from, { replace: true });
+                showSuccessMessage("👍 Github Register Successfully!");
+                navigate(from, {replace: true});
             })
             .catch((err) => {
                 setError(err.message);
@@ -73,8 +118,8 @@ const Register = () => {
         continueWithFacebook()
             .then(() => {
                 setError("");
-                showSuccessMessage("👍 Facebook Register Successfull!");
-                navigate(from, { replace: true });
+                showSuccessMessage("👍 Facebook Register Successfully!");
+                navigate(from, {replace: true});
             })
             .catch((err) => {
                 setError(err.message);
@@ -83,168 +128,179 @@ const Register = () => {
     };
 
     if (loading) {
-        return <Loading />;
+        return <Loading/>;
     }
 
-    return (
-        <div className="min-h-screen bg-gray-100 dark:bg-[#1d232a] flex flex-col justify-center sm:py-12">
-            <div className="p-10 md:pt-0 xs:p-0 mx-auto md:w-full md:max-w-md">
-                <h1 className="font-bold text-center text-3xl mb-5 dark:text-white">
-                    Please Register
-                </h1>
-                <div className="bg-white dark:bg-[#2b3a55] shadow w-full rounded-lg divide-gray-200">
-                    <form onSubmit={handleRegister} className="px-5 pt-7">
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Please Enter Your Full-Name"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                            required
-                        />
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
-                            E-mail
-                        </label>
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Please Enter Your Email"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                            required
-                        />
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Please Enter Your Password"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                            required
-                        />
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
-                            Confirm Password
-                        </label>
-                        <input
-                            type="password"
-                            name="confirm"
-                            placeholder="Please Re-Enter Your Password"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                            required
-                        />
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
-                            Photo URL
-                        </label>
-                        <input
-                            type="text"
-                            name="photoURL"
-                            placeholder="Please Enter a Valid PhotoURL"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
-                            required
-                        />
+    return (<div className="min-h-screen bg-gray-100 dark:bg-[#1d232a] flex flex-col justify-center sm:py-12">
+        <div className="p-10 md:pt-0 xs:p-0 mx-auto md:w-full md:max-w-md">
+            <h1 className="font-bold text-center text-3xl mb-5 dark:text-white">
+                Please Register
+            </h1>
+            <div className="bg-white dark:bg-[#2b3a55] shadow w-full rounded-lg divide-gray-200">
+                <form onSubmit={handleSubmit(onSubmit)} className="px-5 pt-7">
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Name
+                    </label>
+                    <input
+                        {...register("name")}
+                        type="text"
+                        placeholder="Please Enter Your Full-Name"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        required
+                    />
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        E-mail
+                    </label>
+                    <input
+                        {...register("email")}
+                        type="email"
+                        placeholder="Please Enter Your Email"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        required
+                    />
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Password
+                    </label>
+                    <input
+                        {...register("password")}
+                        type="password"
+                        placeholder="Please Enter Your Password"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        required
+                    />
 
-                        {error && (
-                            <p className=" mb-5 text-sm  text-red-700">
-                                {error}
-                            </p>
-                        )}
-                        <button
-                            type="submit"
-                            className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Confirm Password
+                    </label>
+                    <input
+                        {...register("confirm")}
+                        type="password"
+                        placeholder="Please Re-Enter Your Password"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        required
+                    />
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Phone Number
+                    </label>
+                    <input
+                        {...register("phone")}
+                        type="number"
+                        placeholder="Please Enter Your Phone Number"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                    />
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Address
+                    </label>
+                    <input
+                        {...register("address")}
+                        type="text"
+                        placeholder="Please Enter Your Address"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                    />
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Role
+                    </label>
+                    <select
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        {...register("role", {required: true})}>
+                        <option value="student">Student</option>
+                        <option value="instructor">Instructor</option>
+                    </select>
+                    {errors.role &&
+                        <span className="block mb-2 text-error">This field is required. Please Upload your photo</span>}
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Select Gender
+                    </label>
+                    <select
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        {...register("gender")}>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        Photo URL
+                    </label>
+                    <input
+                        {...register("photoURL", {required: true})}
+                        type="file"
+                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+                    {errors.photoURL &&
+                        <span className="block mb-2 text-error">This field is required. Please Upload your photo</span>}
+                    {error && (<p className=" mb-5 text-sm  text-red-700">
+                        {error}
+                    </p>)}
+                    <button
+                        type="submit"
+                        className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+                    >
+                        <span className="inline-block mr-2">Register</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            className="w-4 h-4 inline-block"
                         >
-                            <span className="inline-block mr-2">Register</span>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                className="w-4 h-4 inline-block"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                />
-                            </svg>
-                        </button>
-                    </form>
-                    <div className="m-0 p-0 ">
-                        <p className="mt-6 text-sm text-center text-gray-400 dark:text-white">
-                            Already have an account yet?{" "}
-                            <Link
-                                to="/login"
-                                className="text-blue-500 focus:outline-none focus:underline hover:underline"
-                            >
-                                Login
-                            </Link>
-                        </p>
-                    </div>
-                    <div className="text-center mt-2">
-                        <div className="inline-flex items-center justify-center w-full">
-                            <hr className="w-full h-px  bg-gray-200 border-1 dark:bg-gray-700" />
-                            <span className="absolute px-3 font-medium dark:text-white text-gray-900 -translate-x-1/2 bg-white left-1/2  dark:bg-gray-900">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                            />
+                        </svg>
+                    </button>
+                </form>
+                <div className="m-0 p-0 ">
+                    <p className="mt-6 text-sm text-center text-gray-400 dark:text-white">
+                        Already have an account yet?{" "}
+                        <Link
+                            to="/login"
+                            className="text-blue-500 focus:outline-none focus:underline hover:underline"
+                        >
+                            Login
+                        </Link>
+                    </p>
+                </div>
+                <div className="text-center mt-2">
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-full h-px  bg-gray-200 border-1 dark:bg-gray-700"/>
+                        <span
+                            className="absolute px-3 font-medium dark:text-white text-gray-900 -translate-x-1/2 bg-white left-1/2  dark:bg-gray-900">
                                 OR Continue With
                             </span>
-                        </div>
                     </div>
-                    <div className="p-5">
-                        <div className="grid grid-cols-3 gap-1">
-                            <button
-                                onClick={handleFacebookLogin}
-                                type="button"
-                                className="transition duration-200 border dark:text-white border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
-                            >
-                                Facebook
-                            </button>
-                            <button
-                                onClick={handleGoogleLogin}
-                                type="button"
-                                className="transition duration-200 border dark:text-white border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
-                            >
-                                Google
-                            </button>
-                            <button
-                                onClick={handleGithubLogin}
-                                type="button"
-                                className="transition duration-200 border dark:text-white border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
-                            >
-                                Github
-                            </button>
-                        </div>
-                    </div>
-                    <div className="py-5">
-                        <div className="grid grid-cols-2 gap-1">
-                            <div className="text-center sm:text-left whitespace-nowrap">
-                                <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        className="w-4 h-4 inline-block align-text-top"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                    <span className="inline-block ml-1">
-                                        Forgot Password
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
+                </div>
+                <div className="p-5">
+                    <div className="grid grid-cols-3 gap-1">
+                        <button
+                            onClick={handleFacebookLogin}
+                            type="button"
+                            className="transition duration-200 border dark:text-white border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
+                        >
+                            Facebook
+                        </button>
+                        <button
+                            onClick={handleGoogleLogin}
+                            type="button"
+                            className="transition duration-200 border dark:text-white border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
+                        >
+                            Google
+                        </button>
+                        <button
+                            onClick={handleGithubLogin}
+                            type="button"
+                            className="transition duration-200 border dark:text-white border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
+                        >
+                            Github
+                        </button>
                     </div>
                 </div>
                 <div className="py-5">
                     <div className="grid grid-cols-2 gap-1">
                         <div className="text-center sm:text-left whitespace-nowrap">
-                            <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                            <button
+                                className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -256,19 +312,45 @@ const Register = () => {
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth="2"
-                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                        d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
                                     />
                                 </svg>
-                                <Link to="/" className="inline-block ml-1">
-                                    Back To Home
-                                </Link>
+                                <span className="inline-block ml-1">
+                                        Forgot Password
+                                    </span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div className="py-5">
+                <div className="grid grid-cols-2 gap-1">
+                    <div className="text-center sm:text-left whitespace-nowrap">
+                        <button
+                            className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                className="w-4 h-4 inline-block align-text-top"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                                />
+                            </svg>
+                            <Link to="/" className="inline-block ml-1">
+                                Back To Home
+                            </Link>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    );
+    </div>);
 };
 
 export default Register;

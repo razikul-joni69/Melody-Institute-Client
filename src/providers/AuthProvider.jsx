@@ -18,7 +18,7 @@ import app from "../configs/firebase.config.js";
 
 export const AuthContext = createContext(null);
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 const AuthProvider = ({ children }) => {
     const [error, setError] = useState("");
@@ -43,23 +43,7 @@ const AuthProvider = ({ children }) => {
     const emailPasswordUserCreate = async (email, password, name, photoURL) => {
         setError("");
         await createUserWithEmailAndPassword(auth, email, password)
-            .then(() => {
-                setError("");
-                showSuccessMessage("🦸 User Created Successfully!");
-            })
-            .catch((err) => {
-                setError(err.message);
-                showErrorMessage(err.message);
-            });
 
-        await updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photoURL,
-        })
-            .then(() => {})
-            .catch((err) => {
-                setError(`📈 ${err.message}`);
-            });
     };
 
     const emailPasswordUserLogin = (email, password) => {
