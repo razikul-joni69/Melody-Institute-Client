@@ -6,6 +6,7 @@ import {showErrorMessage, showSuccessMessage} from "../utils/Notification";
 import {useForm} from "react-hook-form";
 import {updateProfile} from "firebase/auth";
 import login from "./Login.jsx";
+import axios from "axios";
 // {pattern: /^(?=.{6,}).*[A-Z].*[!@#$%^&*()_+-={}|;:'",.<>?].*$/}
 const Register = () => {
     const location = useLocation();
@@ -14,12 +15,12 @@ const Register = () => {
         register, handleSubmit, reset, formState: {errors},
     } = useForm()
 
-    document.title = "TOYBOX | Register";
+    document.title = "Melody Institute | Register";
 
     const {
         continueWithGoogle, continueWithGithub, continueWithFacebook, emailPasswordUserCreate, error, setError, loading,
     } = useContext(AuthContext);
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/home";
     const onSubmit = async (data) => {
         const imageUploadToken = import.meta.env.VITE_Image_Upload_Token;
         const imageHostingUrl = `https://api.imgbb.com/1/upload?key=${imageUploadToken}`
@@ -70,9 +71,9 @@ const Register = () => {
                                             setError(`📈 ${err.message}`);
                                             showErrorMessage("🚫 User Profile not updated!")
                                         });
-                                    showSuccessMessage("🦸 User Created Successfully!");
-                                    navigate(from);
+                                    saveUser(userData)
                                     reset()
+                                    navigate(from);
                                 })
                                 .catch((err) => {
                                     setError(err.message);
@@ -86,6 +87,23 @@ const Register = () => {
             }
 
         }
+    }
+
+    const saveUser = async (user) => {
+        const url = "http://localhost:8000/api/v1/user"
+        await axios.post(url, user)
+            .then(res => {
+                if (res?.status === 200) {
+                    console.log(res)
+                    showSuccessMessage("🦸 User Created Successfully!");
+                }
+            })
+            .catch(err => {
+                console.log(err)
+                setError(err.message)
+                showErrorMessage("User Data Not saved in database")
+            })
+
     }
 
     const handleGoogleLogin = () => {

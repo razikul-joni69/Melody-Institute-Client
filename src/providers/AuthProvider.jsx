@@ -40,10 +40,9 @@ const AuthProvider = ({ children }) => {
         };
     }, [user]);
 
-    const emailPasswordUserCreate = async (email, password, name, photoURL) => {
+    const emailPasswordUserCreate = async (email, password) => {
         setError("");
         await createUserWithEmailAndPassword(auth, email, password)
-
     };
 
     const emailPasswordUserLogin = (email, password) => {

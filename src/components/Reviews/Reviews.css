@@ -21,11 +21,11 @@ body {
 }
 
 .swiper-slide {
-    width: 400px;
+    width: 200px;
     height: 400px;
 }
 
-.swiper-slide img {
-    display: block;
-    width: 100%;
-}
+/*.swiper-slide img {*/
+/*    display: block;*/
+/*    width: 100%;*/
+/*}*/
