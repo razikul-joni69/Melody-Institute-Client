@@ -52,7 +52,7 @@ const Reviews = () => {
                 {
                     reviews.map(review => <SwiperSlide>
                         <div
-                            className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
+                            className="h-full bordered bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
                             <div className="flex items-center space-x-4">
                                 <div className="flex-shrink-0">
                                     <img className="w-20 h-20 rounded-full"
@@ -77,8 +77,8 @@ const Reviews = () => {
                             </div>
 
 
-                            <div className="flex justify-between items-center">
-                                <div className="text-sm font-bold text-gray-900 dark:text-white mt-3">
+                            <div className="flex justify-between items-center mt-3">
+                                <div className="text-sm font-bold text-gray-900 dark:text-white">
                                     {new Date().toLocaleDateString("en-US", {
                                         month: 'short',
                                         day: '2-digit',

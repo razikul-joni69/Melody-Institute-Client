@@ -7,6 +7,7 @@ import {useForm} from "react-hook-form";
 import {updateProfile} from "firebase/auth";
 import login from "./Login.jsx";
 import axios from "axios";
+import defaultUserData from "../utils/defaultUserData.js";
 // {pattern: /^(?=.{6,}).*[A-Z].*[!@#$%^&*()_+-={}|;:'",.<>?].*$/}
 const Register = () => {
     const location = useLocation();
@@ -108,7 +109,17 @@ const Register = () => {
 
     const handleGoogleLogin = () => {
         continueWithGoogle()
-            .then(() => {
+            .then((res) => {
+                const user = defaultUserData(res?.user?.displayName, res?.user.email, res?.user.photoURL)
+                saveUser(user).then(res => {
+                    if (res?.status === 200) {
+                        showSuccessMessage("🦸 User Created Successfully!");
+                    }
+                })
+                    .catch(err => {
+                        setError(err.message)
+                        showErrorMessage("User Data Not saved in database")
+                    })
                 setError("");
                 showSuccessMessage("👍 Google Register Successfully!");
                 navigate(from, {replace: true});
@@ -121,7 +132,17 @@ const Register = () => {
 
     const handleGithubLogin = () => {
         continueWithGithub()
-            .then(() => {
+            .then((res) => {
+                const user = defaultUserData(res?.user?.displayName, res?.user.email, res?.user.photoURL)
+                saveUser(user).then(res => {
+                    if (res?.status === 200) {
+                        showSuccessMessage("🦸 User Created Successfully!");
+                    }
+                })
+                    .catch(err => {
+                        setError(err.message)
+                        showErrorMessage("User Data Not saved in database")
+                    })
                 setError("");
                 showSuccessMessage("👍 Github Register Successfully!");
                 navigate(from, {replace: true});
@@ -134,7 +155,17 @@ const Register = () => {
 
     const handleFacebookLogin = () => {
         continueWithFacebook()
-            .then(() => {
+            .then((res) => {
+                const user = defaultUserData(res?.user?.displayName, res?.user.email, res?.user.photoURL)
+                saveUser(user).then(res => {
+                    if (res?.status === 200) {
+                        showSuccessMessage("🦸 User Created Successfully!");
+                    }
+                })
+                    .catch(err => {
+                        setError(err.message)
+                        showErrorMessage("User Data Not saved in database")
+                    })
                 setError("");
                 showSuccessMessage("👍 Facebook Register Successfully!");
                 navigate(from, {replace: true});

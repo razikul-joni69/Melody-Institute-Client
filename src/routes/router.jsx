@@ -5,7 +5,7 @@ import Pages from "../layout/Pages.jsx";
 import NotFound from "../components/NotFound/NotFound.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
-import Instroctors from "../components/Instructors/Instroctors.jsx";
+import Instructors from "../pages/Instructors.jsx";
 
 const router = createBrowserRouter([
     {
@@ -15,9 +15,9 @@ const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <Home/>
-            }, {
-                path: "instructors",
-                element: <Instroctors/>
+            },{
+                path: "/instructors",
+                element: <Instructors/>
             }, {
                 path: "/login",
                 element: <Login/>
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
                 element: <Register/>
             }
         ]
-    }, {
+    },  {
         path: "*",
         element: <NotFound/>
     }
