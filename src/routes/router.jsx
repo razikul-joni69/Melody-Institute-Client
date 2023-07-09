@@ -6,6 +6,7 @@ import NotFound from "../components/NotFound/NotFound.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
 import Instructors from "../pages/Instructors.jsx";
+import Classes from "../pages/Classes.jsx";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,9 @@ const router = createBrowserRouter([
                 path: "/instructors",
                 element: <Instructors/>
             }, {
+                path: "classes",
+                element: <Classes/>
+            },{
                 path: "/login",
                 element: <Login/>
             }, {
