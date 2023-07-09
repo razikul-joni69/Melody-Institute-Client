@@ -23,15 +23,17 @@ const Navbar = () => {
                         {
                             routes.map(route => <li><NavLink to={route.toLowerCase()}>{route}</NavLink></li>)
                         }
+                        <li><NavLink to={user && "/dashboard"}>Dashboard</NavLink></li>
                     </ul>
                 </div>
-                <NavLink to={"/"} className="btn btn-ghost normal-case text-xl">Melody Institute</NavLink>
+                <NavLink to={"/home"} className="btn btn-ghost normal-case text-xl">Melody Institute</NavLink>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
                     {
                         routes.map(route => <li><NavLink to={route.toLowerCase()}>{route}</NavLink></li>)
                     }
+                    <li><NavLink to={user && "/dashboard"}>Dashboard</NavLink></li>
                 </ul>
             </div>
             {

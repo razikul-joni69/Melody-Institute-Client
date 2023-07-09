@@ -6,6 +6,13 @@
     color: red;
 }
 
+@media only screen and (max-width: 768px) {
+    #sidebar {
+        /*visibility: hidden;*/
+        /*display: none;*/
+    }
+}
+
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
 /*  line-height: 1.5;*/

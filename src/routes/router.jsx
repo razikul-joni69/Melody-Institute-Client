@@ -7,6 +7,9 @@ import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
 import Instructors from "../pages/Instructors.jsx";
 import Classes from "../pages/Classes.jsx";
+import Dashboard from "../pages/Dashboard.jsx";
+import SelectedClasses from "../components/Students/SelectedClasses.jsx";
+import EnrolledClasses from "../components/Students/EnrolledClasses.jsx";
 
 const router = createBrowserRouter([
     {
@@ -16,13 +19,16 @@ const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <Home/>
-            },{
+            }, {
                 path: "/instructors",
                 element: <Instructors/>
             }, {
                 path: "classes",
                 element: <Classes/>
-            },{
+            }, {
+                path: "/dashboard",
+                element: <Dashboard/>
+            }, {
                 path: "/login",
                 element: <Login/>
             }, {
@@ -30,7 +36,19 @@ const router = createBrowserRouter([
                 element: <Register/>
             }
         ]
-    },  {
+    }, {
+        path: "/dashboard",
+        element: <Dashboard/>,
+        children: [
+            {
+                path: "selected-classes",
+                element: <SelectedClasses/>
+            }, {
+                path: "enrolled-classes",
+                element: <EnrolledClasses/>
+            }
+        ]
+    }, {
         path: "*",
         element: <NotFound/>
     }
