@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../../providers/AuthProvider.jsx";
+import { AuthContext } from "../../../providers/AuthProvider.jsx";
 import {
     showErrorMessage,
     showSuccessMessage,
-} from "../../utils/Notification.js";
+} from "../../../utils/Notification.js";
 
 const AddClass = () => {
     const { user } = useContext(AuthContext);
@@ -13,7 +13,6 @@ const AddClass = () => {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm();
 
@@ -23,6 +22,8 @@ const AddClass = () => {
 
         data.instructor_name = user?.displayName;
         data.instructor_email = user?.email;
+        data.instructor_img = user?.photoURL;
+        data.status = "pending";
         data.enrolled_students = 0;
         data.available_seats = parseInt(data?.total_seats);
         data.total_seats = parseInt(data?.total_seats);
