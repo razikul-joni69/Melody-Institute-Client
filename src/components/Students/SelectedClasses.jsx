@@ -14,7 +14,7 @@ const SelectedClasses = () => {
     const [selectedClasses, setSelectedClasses] = useState([])
 
     useEffect(() => {
-        axios.get("/classes.json")
+        axios.get("http://localhost:8000/api/v1/classes")
             .then(data => setSelectedClasses(data?.data))
             .catch(err => {
                 showErrorMessage(err.message)
@@ -57,7 +57,7 @@ const SelectedClasses = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="font-bold">{cls.class_Name}</div>
+                                    <div className="font-bold">{cls.class_name}</div>
                                     <div className="text-sm opacity-50">United States</div>
                                 </div>
                             </div>

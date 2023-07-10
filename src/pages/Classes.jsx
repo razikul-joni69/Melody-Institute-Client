@@ -11,7 +11,7 @@ import {Link} from "react-router-dom";
 const Classes = () => {
     const [classes, setClasses] = useState([])
     useEffect(() => {
-        fetch("/classes.json")
+        fetch("http://localhost:8000/api/v1/classes")
             .then(res => res.json())
             .then(data => setClasses(data))
     }, [])

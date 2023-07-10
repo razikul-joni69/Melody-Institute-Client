@@ -95,12 +95,10 @@ const Register = () => {
         await axios.post(url, user)
             .then(res => {
                 if (res?.status === 200) {
-                    console.log(res)
                     showSuccessMessage("🦸 User Created Successfully!");
                 }
             })
             .catch(err => {
-                console.log(err)
                 setError(err.message)
                 showErrorMessage("User Data Not saved in database")
             })
@@ -181,102 +179,102 @@ const Register = () => {
     }
 
     return (<div className="min-h-screen bg-gray-100 dark:bg-[#1d232a] flex flex-col justify-center sm:py-12">
-        <div className="p-10 md:pt-0 xs:p-0 mx-auto md:w-full md:max-w-md">
-            <h1 className="font-bold text-center text-3xl mb-5 dark:text-white">
+        <div className="p-10 mx-auto md:pt-0 xs:p-0 md:w-full md:max-w-md">
+            <h1 className="mb-5 text-3xl font-bold text-center dark:text-white">
                 Please Register
             </h1>
             <div className="bg-white dark:bg-[#2b3a55] shadow w-full rounded-lg divide-gray-200">
                 <form onSubmit={handleSubmit(onSubmit)} className="px-5 pt-7">
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Name
                     </label>
                     <input
                         {...register("name")}
                         type="text"
                         placeholder="Please Enter Your Full-Name"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                         required
                     />
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         E-mail
                     </label>
                     <input
                         {...register("email")}
                         type="email"
                         placeholder="Please Enter Your Email"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                         required
                     />
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Password
                     </label>
                     <input
                         {...register("password")}
                         type="password"
                         placeholder="Please Enter Your Password"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                         required
                     />
 
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Confirm Password
                     </label>
                     <input
                         {...register("confirm")}
                         type="password"
                         placeholder="Please Re-Enter Your Password"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                         required
                     />
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Phone Number
                     </label>
                     <input
                         {...register("phone")}
                         type="number"
                         placeholder="Please Enter Your Phone Number"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                     />
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Address
                     </label>
                     <input
                         {...register("address")}
                         type="text"
                         placeholder="Please Enter Your Address"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                     />
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Role
                     </label>
                     <select
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                         {...register("role", {required: true})}>
                         <option value="student">Student</option>
                         <option value="instructor">Instructor</option>
                     </select>
                     {errors.role &&
                         <span className="block mb-2 text-error">This field is required. Please Upload your photo</span>}
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Select Gender
                     </label>
                     <select
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                         {...register("gender")}>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
                     </select>
-                    <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                    <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                         Photo URL
                     </label>
                     <input
                         {...register("photoURL", {required: true})}
                         type="file"
-                        className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"/>
+                        className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"/>
                     {errors.photoURL &&
                         <span className="block mb-2 text-error">This field is required. Please Upload your photo</span>}
-                    {error && (<p className=" mb-5 text-sm  text-red-700">
+                    {error && (<p className="mb-5 text-sm text-red-700 ">
                         {error}
                     </p>)}
                     <button
@@ -289,7 +287,7 @@ const Register = () => {
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
-                            className="w-4 h-4 inline-block"
+                            className="inline-block w-4 h-4"
                         >
                             <path
                                 strokeLinecap="round"
@@ -300,7 +298,7 @@ const Register = () => {
                         </svg>
                     </button>
                 </form>
-                <div className="m-0 p-0 ">
+                <div className="p-0 m-0 ">
                     <p className="mt-6 text-sm text-center text-gray-400 dark:text-white">
                         Already have an account yet?{" "}
                         <Link
@@ -311,11 +309,11 @@ const Register = () => {
                         </Link>
                     </p>
                 </div>
-                <div className="text-center mt-2">
+                <div className="mt-2 text-center">
                     <div className="inline-flex items-center justify-center w-full">
-                        <hr className="w-full h-px  bg-gray-200 border-1 dark:bg-gray-700"/>
+                        <hr className="w-full h-px bg-gray-200 border-1 dark:bg-gray-700"/>
                         <span
-                            className="absolute px-3 font-medium dark:text-white text-gray-900 -translate-x-1/2 bg-white left-1/2  dark:bg-gray-900">
+                            className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white dark:text-white left-1/2 dark:bg-gray-900">
                                 OR Continue With
                             </span>
                     </div>
@@ -349,13 +347,13 @@ const Register = () => {
                     <div className="grid grid-cols-2 gap-1">
                         <div className="text-center sm:text-left whitespace-nowrap">
                             <button
-                                className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                                className="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 rounded-lg cursor-pointer hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
-                                    className="w-4 h-4 inline-block align-text-top"
+                                    className="inline-block w-4 h-4 align-text-top"
                                 >
                                     <path
                                         strokeLinecap="round"
@@ -376,13 +374,13 @@ const Register = () => {
                 <div className="grid grid-cols-2 gap-1">
                     <div className="text-center sm:text-left whitespace-nowrap">
                         <button
-                            className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                            className="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 rounded-lg cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                className="w-4 h-4 inline-block align-text-top"
+                                className="inline-block w-4 h-4 align-text-top"
                             >
                                 <path
                                     strokeLinecap="round"

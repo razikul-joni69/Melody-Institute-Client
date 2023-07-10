@@ -3,23 +3,27 @@ import {AiOutlineMenuUnfold} from "react-icons/ai";
 import {CgClose} from "react-icons/cg";
 import axios from "axios";
 import {showErrorMessage} from "../../utils/Notification.js";
-import {FaCcMastercard, FaTrashAlt} from "react-icons/fa";
 import {SiGoogleclassroom} from "react-icons/si";
 import {BiSelectMultiple} from "react-icons/bi";
 import {RiSecurePaymentLine} from "react-icons/ri";
-import {BsCreditCard2FrontFill} from "react-icons/bs";
-import {NavLink, Outlet} from "react-router-dom";
+import {NavLink, Outlet, redirect, useLocation, useNavigate} from "react-router-dom";
 
 const Sidebar = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
     const [selectedClasses, setSelectedClasses] = useState([])
+    const location = useLocation();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
-        axios.get("/classes.json")
+        axios.get("http://localhost:8000/api/v1/classes")
             .then(data => setSelectedClasses(data?.data))
             .catch(err => {
                 showErrorMessage(err.message)
-            })
+            });
+        if (location.pathname == "/dashboard") {
+            navigate("/dashboard/selected-classes")
+        }
     }, [])
 
     const toggleSidebar = () => {
