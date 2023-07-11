@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { MdPlayLesson } from "react-icons/md";
 import { NavLink } from "react-router-dom";
+import Titles from "../components/Titles/Titles";
 
 const Instructors = () => {
     const [instructors, setInstructors] = useState([]);
@@ -11,17 +12,11 @@ const Instructors = () => {
             .then((data) => setInstructors(data));
     }, []);
     return (
-        <div>
-            <div className="my-5 text-center">
-                <div className="space-y-3 text-center ">
-                    <h1 className="text-4xl font-bold md:text-5xl">
-                        All of our Instructors
-                    </h1>
-                    <p className="text-xl text-gray-500">
-                        Choose your favourite class and instructor.
-                    </p>
-                </div>
-            </div>
+        <div className="my-10">
+            <Titles
+                title="All of our Instructors"
+                subTitle=" Choose your favourite instructors class."
+            />
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center">
                 {instructors.map((instructor) => (
                     <div
@@ -63,7 +58,6 @@ const Instructors = () => {
                                                 ? "Classes"
                                                 : "Class"}
                                         </div>
-
                                         <div className="flex items-center gap-1 text-[15px] text-gray-600">
                                             <FaUser className="text-red-700 text-[20px]" />{" "}
                                             {instructor.total_students}{" "}

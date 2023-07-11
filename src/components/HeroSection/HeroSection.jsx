@@ -1,16 +1,7 @@
-import React from "react";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-cards";
-
-import "./HeroSection.css";
-
-// import required modules
 import { Autoplay, EffectCards } from "swiper/modules";
-
+import { Swiper, SwiperSlide } from "swiper/react";
 import img1 from "../../assets/images/HeroImages/Shiny Happy - Outdoors.png";
 import {
     default as img2,
@@ -20,6 +11,7 @@ import img3 from "../../assets/images/HeroImages/drum.png";
 import img4 from "../../assets/images/HeroImages/flute.png";
 import img5 from "../../assets/images/HeroImages/trumpet.png";
 import img6 from "../../assets/images/HeroImages/violin.png";
+import "./HeroSection.css";
 
 const HeroSection = () => {
     const images = [img1, img2, img3, img4, img5, img6, img7];
@@ -60,8 +52,8 @@ const HeroSection = () => {
                             modules={[EffectCards, Autoplay]}
                             className="mySwiper"
                         >
-                            {images.map((img) => (
-                                <SwiperSlide>
+                            {images.map((img, index) => (
+                                <SwiperSlide key={index}>
                                     <img
                                         className=""
                                         src={img}

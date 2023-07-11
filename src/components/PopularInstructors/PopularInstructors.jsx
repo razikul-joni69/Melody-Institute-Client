@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { MdPlayLesson } from "react-icons/md";
+import Titles from "../Titles/Titles";
 
 const PopularInstructors = () => {
     const [instructors, setInstructors] = useState([]);
@@ -11,16 +12,10 @@ const PopularInstructors = () => {
     }, []);
     return (
         <div>
-            <div className="my-5 text-center">
-                <div className="space-y-3 text-center ">
-                    <h1 className="text-4xl font-bold md:text-5xl">
-                        Popular Instructors
-                    </h1>
-                    <p className="text-xl text-gray-500">
-                        See All of your popular instructors here.
-                    </p>
-                </div>
-            </div>
+            <Titles
+                title="Popular Instructors"
+                subTitle="See All of your favourite instructors."
+            />
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center">
                 {instructors.map((instructor) => (
                     <div
@@ -92,9 +87,12 @@ const PopularInstructors = () => {
                             {instructor.number_of_classes > 0 ? (
                                 <div>
                                     <div className="flex justify-center">
-                                        {instructor.name_of_classes?.map(
-                                            (cls) => (
-                                                <span className="px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full">
+                                        {instructor?.name_of_classes?.map(
+                                            (cls, index) => (
+                                                <span
+                                                    key={index}
+                                                    className="px-3 py-1 mb-2 mr-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-full"
+                                                >
                                                     {cls}
                                                 </span>
                                             )

@@ -1,17 +1,12 @@
+import { Rating } from "@smastrom/react-rating";
 import { useEffect, useState } from "react";
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-
-import "./Reviews.css";
-
-// import required modules
-import { Rating } from "@smastrom/react-rating";
 import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import Titles from "../Titles/Titles";
+import "./Reviews.css";
 
 const Reviews = () => {
     const [reviews, setReviews] = useState([]);
@@ -23,14 +18,7 @@ const Reviews = () => {
     }, []);
     return (
         <div>
-            <div className="my-5 text-center">
-                <div className="space-y-3 text-center ">
-                    <h1 className="text-4xl font-bold md:text-5xl">Reviews</h1>
-                    <p className="text-xl text-gray-500">
-                        What Our Students say
-                    </p>
-                </div>
-            </div>
+            <Titles title="Reviews" subTitle="What Our Students say" />
             <Swiper
                 effect={"coverflow"}
                 grabCursor={true}
@@ -49,8 +37,8 @@ const Reviews = () => {
                 modules={[EffectCoverflow, Pagination, Autoplay]}
                 className="mb-10 mySwiper"
             >
-                {reviews.map((review) => (
-                    <SwiperSlide key={review._id}>
+                {reviews.map((review, index) => (
+                    <SwiperSlide key={index}>
                         <div className="h-full p-5 bg-white border border-gray-200 rounded-lg shadow bordered dark:bg-gray-800 dark:border-gray-700">
                             <div className="flex items-center space-x-4">
                                 <div className="flex-shrink-0">

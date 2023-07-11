@@ -1,30 +1,20 @@
 import { Rating } from "@smastrom/react-rating";
-import { useEffect, useState } from "react";
 import { BsBookHalf } from "react-icons/bs";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdOutlineEventSeat } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Titles from "../components/Titles/Titles";
+import useClasses from "../hooks/useClasses";
 
 const Classes = () => {
-    const [classes, setClasses] = useState([]);
-    useEffect(() => {
-        fetch("http://localhost:8000/api/v1/classes")
-            .then((res) => res.json())
-            .then((data) => setClasses(data));
-    }, []);
+    const [classes] = useClasses();
 
     return (
-        <div className="my-24 ">
-            <div className="mb-8 text-center">
-                <div className="space-y-3 text-center ">
-                    <h1 className="text-4xl font-bold md:text-5xl">
-                        All of our Classes are Here
-                    </h1>
-                    <p className="text-xl text-gray-500">
-                        Enroll to your favourite class now.
-                    </p>
-                </div>
-            </div>
+        <div className="my-10">
+            <Titles
+                title="All Classes"
+                subTitle="All of your favourite classes is here."
+            />
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center">
                 {classes.map((cls) => (
                     <div
@@ -46,7 +36,7 @@ const Classes = () => {
                             <div className={`flex-1 min-w-0`}>
                                 <p
                                     className={`text-md font-bold ${
-                                        cls.available_seats > 0
+                                        cls?.available_seats > 0
                                             ? "text-gray-900"
                                             : "text-white"
                                     }  truncate dark:text-white`}
@@ -55,12 +45,12 @@ const Classes = () => {
                                 </p>
                                 <p
                                     className={`text-sm  ${
-                                        cls.available_seats > 0
+                                        cls?.available_seats > 0
                                             ? "text-gray-500"
                                             : "text-white"
                                     } truncate dark:text-gray-400`}
                                 >
-                                    {cls.instructor_email}
+                                    {cls?.instructor_email}
                                 </p>
                             </div>
                             <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -109,14 +99,14 @@ const Classes = () => {
                                 />
                             </a>
                             <span className="absolute top-0 right-0 text-white rounded-full btn btn-sm btn-error">
-                                {cls.tag}
+                                {cls?.tag}
                             </span>
                         </div>
                         <hr className="my-4" />
                         <div className="space-y-2">
                             <div
                                 className={`grid grid-cols-2 gap-2 ${
-                                    cls.available_seats > 0
+                                    cls?.available_seats > 0
                                         ? "text-gray-500"
                                         : "text-white"
                                 }`}
@@ -124,50 +114,50 @@ const Classes = () => {
                                 <div className="flex items-center gap-1 text-[15px]">
                                     <BsBookHalf
                                         className={`${
-                                            cls.available_seats > 0
+                                            cls?.available_seats > 0
                                                 ? "text-red-700"
                                                 : "text-cyan-500"
                                         } text-[20px]`}
                                     />{" "}
-                                    {cls.lessons}{" "}
-                                    {cls.lessons > 1 ? "Lesson's" : "Lesson"}
+                                    {cls?.lessons}{" "}
+                                    {cls?.lessons > 1 ? "Lesson's" : "Lesson"}
                                 </div>
                                 <div className="flex items-center gap-1 text-[15px]">
                                     <MdOutlineEventSeat
                                         className={`${
-                                            cls.available_seats > 0
+                                            cls?.available_seats > 0
                                                 ? "text-red-700"
                                                 : "text-cyan-500"
                                         } text-[20px]`}
                                     />{" "}
-                                    {cls.total_seats}{" "}
-                                    {cls.total_seats > 1
+                                    {cls?.total_seats}{" "}
+                                    {cls?.total_seats > 1
                                         ? "Total Seat's"
                                         : "Total Seat"}
                                 </div>
                                 <div className="flex items-center gap-1 text-[15px]">
                                     <FaPeopleGroup
                                         className={`${
-                                            cls.available_seats > 0
+                                            cls?.available_seats > 0
                                                 ? "text-red-700"
                                                 : "text-cyan-500"
                                         } text-[20px]`}
                                     />{" "}
-                                    {cls.enrolled_students}{" "}
-                                    {cls.enrolled_students > 1
+                                    {cls?.enrolled_students}{" "}
+                                    {cls?.enrolled_students > 1
                                         ? "Enrolled Student's"
                                         : "Enrolled Student"}
                                 </div>
                                 <div className="flex items-center gap-1 text-[15px]">
                                     <MdOutlineEventSeat
                                         className={`${
-                                            cls.available_seats > 0
+                                            cls?.available_seats > 0
                                                 ? "text-red-700"
                                                 : "text-cyan-500"
                                         } text-[20px]`}
                                     />{" "}
-                                    {cls.available_seats}{" "}
-                                    {cls.available_seats > 1
+                                    {cls?.available_seats}{" "}
+                                    {cls?.available_seats > 1
                                         ? "Available Seat's"
                                         : "Available Seat"}
                                 </div>
@@ -175,38 +165,38 @@ const Classes = () => {
 
                             <div
                                 className={`${
-                                    cls.available_seats > 0
+                                    cls?.available_seats > 0
                                         ? "text-gray-900"
                                         : "text-white"
                                 } text-xl font-semibold tracking-tight dark:text-white`}
                             >
-                                <h4>{cls.class_Name}</h4>
+                                <h4>{cls?.class_Name}</h4>
 
-                                <h4>${cls.price}</h4>
+                                <h4>${cls?.price}</h4>
                             </div>
                             <div
                                 className={`${
-                                    cls.available_seats > 0
+                                    cls?.available_seats > 0
                                         ? "text-gray-500"
                                         : "text-white"
                                 }`}
                             >
-                                {cls.class_description.slice(0, 100)}
+                                {cls?.class_description?.slice(0, 100)}
                             </div>
                             <div className="flex items-center justify-between">
                                 <Rating
                                     style={{ maxWidth: 130 }}
-                                    value={cls.rating}
+                                    value={cls?.rating}
                                     readOnly
                                 />
                                 <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 -ml-4">
-                                    {cls.total_ratings}
+                                    {cls?.total_ratings}
                                 </span>
                                 <Link to={"/test"}>
                                     <button
                                         // disabled={cls.available_seats > 0 ? false : true}
                                         className={`${
-                                            cls.available_seats > 0
+                                            cls?.available_seats > 0
                                                 ? "btn-success"
                                                 : "btn-warning disabled opacity-50 cursor-not-allowed"
                                         } btn btn-sm text-white`}

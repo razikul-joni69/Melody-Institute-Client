@@ -1,28 +1,19 @@
 import { Rating } from "@smastrom/react-rating";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BsBookHalf } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
+import useClasses from "../../hooks/useClasses";
+import Titles from "../Titles/Titles";
 
 const PopularClasses = () => {
-    const [classes, setClasses] = useState([]);
-    useEffect(() => {
-        fetch("http://localhost:8000/api/v1/classes")
-            .then((res) => res.json())
-            .then((data) => setClasses(data));
-    }, []);
+    const [classes] = useClasses();
 
     return (
         <div>
-            <div className="my-5 text-center">
-                <div className="space-y-3 text-center ">
-                    <h1 className="text-4xl font-bold md:text-5xl">
-                        Popular Courses
-                    </h1>
-                    <p className="text-xl text-gray-500">
-                        See All of your favourite Musical classes here.
-                    </p>
-                </div>
-            </div>
+            <Titles
+                title="Popular Classes"
+                subTitle="See All of your favourite Musical classes here."
+            />
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center">
                 {classes.map((cls) => (
                     <div
@@ -118,7 +109,7 @@ const PopularClasses = () => {
                             <div className="text-2xl font-bold text-gray-900 dark:text-white">
                                 ${cls.price}
                             </div>
-                            {/* <div>{cls.class_description.slice(0, 100)}</div> */}
+                            <div>{cls?.class_description?.slice(0, 100)}</div>
                             <div>{cls?.class_description?.slice(0, 100)}</div>
                             <div className="flex items-center justify-between">
                                 <Rating
