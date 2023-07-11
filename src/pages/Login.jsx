@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Providers/AuthProvider";
-import Loading from "../../../../Assignment-11/client/src/components/Loading/Loading.jsx";
 import { showErrorMessage, showSuccessMessage } from "../utils/Notification";
+import saveUserToDb from "../utils/saveUsertoDb";
 
 const Login = () => {
     const location = useLocation();
@@ -17,10 +17,9 @@ const Login = () => {
         emailPasswordUserLogin,
         error,
         setError,
-        loading,
     } = useContext(AuthContext);
 
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/home";
 
     const handleUserLogin = (e) => {
         e.preventDefault();
@@ -46,7 +45,12 @@ const Login = () => {
 
     const handleGoogleLogin = () => {
         continueWithGoogle()
-            .then(() => {
+            .then((res) => {
+                saveUserToDb(
+                    res?.user?.displayName,
+                    res?.user.email,
+                    res?.user.photoURL
+                );
                 setError("");
                 showSuccessMessage("👍 Google SignIn Successful!");
                 navigate(from, { replace: true });
@@ -59,7 +63,12 @@ const Login = () => {
 
     const handleGithubLogin = () => {
         continueWithGithub()
-            .then(() => {
+            .then((res) => {
+                saveUserToDb(
+                    res?.user?.displayName,
+                    res?.user.email,
+                    res?.user.photoURL
+                );
                 setError("");
                 showSuccessMessage("👍 Github SignIn Successfully!");
                 navigate(from, { replace: true });
@@ -72,7 +81,12 @@ const Login = () => {
 
     const handleFacebookLogin = () => {
         continueWithFacebook()
-            .then(() => {
+            .then((res) => {
+                saveUserToDb(
+                    res?.user?.displayName,
+                    res?.user.email,
+                    res?.user.photoURL
+                );
                 setError("");
                 showSuccessMessage("👍 Facebook SignIn Successfully!");
                 navigate(from, { replace: true });
@@ -83,40 +97,36 @@ const Login = () => {
             });
     };
 
-    if (loading) {
-        return <Loading />;
-    }
-
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-[#1d232a]  flex flex-col justify-center sm:py-12">
-            <div className="md:pt-0  p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
-                <h1 className="font-bold text-center text-3xl dark:text-white mb-5">
+            <div className="p-10 mx-auto md:pt-0 xs:p-0 md:w-full md:max-w-md">
+                <h1 className="mb-5 text-3xl font-bold text-center dark:text-white">
                     Please Login
                 </h1>
                 <div className="bg-white dark:bg-[#2B3A55]   shadow w-full rounded-lg divide-gray-200">
                     <form onSubmit={handleUserLogin} className="px-5 pt-7">
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                             E-mail
                         </label>
                         <input
                             type="email"
                             name="email"
                             placeholder="Please Enter Your Email"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                            className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                             required
                         />
-                        <label className="font-semibold text-sm text-gray-600 dark:text-white pb-1 block">
+                        <label className="block pb-1 text-sm font-semibold text-gray-600 dark:text-white">
                             Password
                         </label>
                         <input
                             type="password"
                             name="password"
                             placeholder="Please Enter Your Password"
-                            className="dark:text-white dark:bg-slate-700 border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+                            className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                             required
                         />
                         {error && (
-                            <p className=" mb-5 text-sm  text-red-700">
+                            <p className="mb-5 text-sm text-red-700 ">
                                 {error}
                             </p>
                         )}
@@ -130,7 +140,7 @@ const Login = () => {
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                className="w-4 h-4 inline-block"
+                                className="inline-block w-4 h-4"
                             >
                                 <path
                                     strokeLinecap="round"
@@ -141,7 +151,7 @@ const Login = () => {
                             </svg>
                         </button>
                     </form>
-                    <div className="m-0 p-0 ">
+                    <div className="p-0 m-0 ">
                         <p className="mt-6 text-sm text-center text-gray-400 dark:text-white">
                             Don&#x27;t have an account yet?{" "}
                             <Link
@@ -152,9 +162,9 @@ const Login = () => {
                             </Link>
                         </p>
                     </div>
-                    <div className="text-center mt-2">
+                    <div className="mt-2 text-center">
                         <div className="inline-flex items-center justify-center w-full">
-                            <hr className="w-full h-px  bg-gray-200 border-1 dark:bg-gray-700" />
+                            <hr className="w-full h-px bg-gray-200 border-1 dark:bg-gray-700" />
                             <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">
                                 OR Continue With
                             </span>
@@ -188,13 +198,13 @@ const Login = () => {
                     <div className="py-5">
                         <div className="grid grid-cols-2 gap-1">
                             <div className="text-center sm:text-left whitespace-nowrap">
-                                <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                                <button className="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 rounded-lg cursor-pointer hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
-                                        className="w-4 h-4 inline-block align-text-top"
+                                        className="inline-block w-4 h-4 align-text-top"
                                     >
                                         <path
                                             strokeLinecap="round"
@@ -214,13 +224,13 @@ const Login = () => {
                 <div className="py-5">
                     <div className="grid grid-cols-2 gap-1">
                         <div className="text-center sm:text-left whitespace-nowrap">
-                            <button className="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+                            <button className="px-5 py-4 mx-5 text-sm font-normal text-gray-500 transition duration-200 rounded-lg cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
-                                    className="w-4 h-4 inline-block align-text-top"
+                                    className="inline-block w-4 h-4 align-text-top"
                                 >
                                     <path
                                         strokeLinecap="round"

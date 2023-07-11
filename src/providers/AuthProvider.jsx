@@ -9,12 +9,12 @@ import {
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
-    updateProfile,
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-import {showErrorMessage, showSuccessMessage} from "../utils/Notification.js";
+import Loading from "../components/Loading/Loading.jsx";
 import app from "../configs/firebase.config.js";
+import { showErrorMessage, showSuccessMessage } from "../utils/Notification.js";
 
 export const AuthContext = createContext(null);
 
@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
 
     const emailPasswordUserCreate = async (email, password) => {
         setError("");
-        await createUserWithEmailAndPassword(auth, email, password)
+        return await createUserWithEmailAndPassword(auth, email, password);
     };
 
     const emailPasswordUserLogin = (email, password) => {
@@ -84,6 +84,10 @@ const AuthProvider = ({ children }) => {
         continueWithFacebook,
         logOut,
     };
+
+    if (loading) {
+        return <Loading />;
+    }
 
     return (
         <AuthContext.Provider value={authInfo}>
