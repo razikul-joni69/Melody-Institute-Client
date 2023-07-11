@@ -44,7 +44,6 @@ const ManageUsers = () => {
                     <h1 className="text-4xl font-bold md:text-5xl">
                         Manage Users
                     </h1>
-                    
                 </div>
             </div>
             <table className="table table-zebra">

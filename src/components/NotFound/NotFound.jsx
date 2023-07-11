@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import notFound from "../../assets/images/error.gif";
 import "./NotFound.css";
-import notFound from "../../assets/images/error.gif"
 
 const NotFound = () => {
     return (
@@ -9,20 +9,17 @@ const NotFound = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-sm-12 ">
-                        <div className="col-sm-10 col-sm-offset-1  text-center">
+                        <div className="text-center col-sm-10 col-sm-offset-1">
                             <div className="error-image">
-                                <img src={notFound} alt="404"/>
+                                <img src={notFound} alt="404" />
                             </div>
-                            <div className="four_zero_four_bg">
-                            </div>
-
+                            <div className="four_zero_four_bg"></div>
                             <div className="contant_box_404">
                                 <h3 className="h2">Looks like you're lost</h3>
-
                                 <p>
-                                    The page you are looking for is not available!
+                                    The page you are looking for is not
+                                    available!
                                 </p>
-
                                 <Link to="/home" className="link_404">
                                     Back To Home
                                 </Link>

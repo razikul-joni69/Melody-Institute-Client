@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { CgClose } from "react-icons/cg";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../providers/AuthProvider.jsx";
+import { AuthContext } from "../../../Providers/AuthProvider.jsx";
 import { showErrorMessage } from "../../../utils/Notification.js";
 import {
     adminNavigation,
@@ -37,7 +37,6 @@ const Sidebar = () => {
             });
 
         if (location.pathname == "/dashboard") {
-            console.log(dbuser?.role);
             if (dbuser?.role === "student") {
                 navigate("/dashboard/selected-classes");
             } else if (dbuser?.role === "instructor") {

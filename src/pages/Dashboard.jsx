@@ -1,12 +1,12 @@
-import  {useContext} from 'react';
-import {AuthContext} from "../providers/AuthProvider.jsx";
-import Sidebar from '../components/Dashboard/Sidebar/Sidebar.jsx';
+import { useContext } from "react";
+import Sidebar from "../components/Dashboard/Sidebar/Sidebar.jsx";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Dashboard = () => {
-    const {user} = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
     return (
         <div>
-            <Sidebar/>
+            <Sidebar />
         </div>
     );
 };

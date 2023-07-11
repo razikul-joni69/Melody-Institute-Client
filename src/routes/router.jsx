@@ -12,6 +12,7 @@ import Home from "../pages/Home.jsx";
 import Instructors from "../pages/Instructors.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -32,7 +33,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <Dashboard />,
+                element: (
+                    <PrivateRoute>
+                        <Dashboard />
+                    </PrivateRoute>
+                ),
                 children: [
                     {
                         path: "/dashboard/selected-classes",
