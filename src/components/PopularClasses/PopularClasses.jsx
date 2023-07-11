@@ -15,9 +15,9 @@ const PopularClasses = () => {
 
     return (
         <div>
-            <div className="text-center my-5">
-                <div className="text-center space-y-3 ">
-                    <h1 className="text-4xl md:text-5xl font-bold">
+            <div className="my-5 text-center">
+                <div className="space-y-3 text-center ">
+                    <h1 className="text-4xl font-bold md:text-5xl">
                         Popular Courses
                     </h1>
                     <p className="text-xl text-gray-500">
@@ -25,20 +25,20 @@ const PopularClasses = () => {
                     </p>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 justify-items-center">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center">
                 {
                     classes.map(cls =>
 
                         <div
-                            className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
+                            className="w-full max-w-sm p-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                             <div className="flex items-center space-x-4">
                                 <div className="flex-shrink-0">
-                                    <img className="w-14 h-14 rounded-full"
+                                    <img className="rounded-full w-14 h-14"
                                          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                                          alt="Bonnie image"/>
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-md font-bold text-gray-900 truncate dark:text-white">
+                                    <p className="font-bold text-gray-900 truncate text-md dark:text-white">
                                         {cls.instructor_name} (Instructor)
                                     </p>
                                     <p className="text-sm text-gray-500 truncate dark:text-gray-400">
@@ -69,12 +69,12 @@ const PopularClasses = () => {
                             <hr className="my-4"/>
                             <div className="relative">
                                 <a className="relative" href="#">
-                                    <img className=" rounded-t-lg"
+                                    <img className="rounded-t-lg "
                                          src="https://flowbite.com/docs/images/products/apple-watch.png"
                                          alt="product image"/>
                                 </a>
                                 <span
-                                    className="absolute top-0 right-0 btn btn-sm btn-error rounded-full text-white">{cls.tag}</span>
+                                    className="absolute top-0 right-0 text-white rounded-full btn btn-sm btn-error">{cls.tag}</span>
                             </div>
                             <hr className="my-4"/>
                             <div className="space-y-2">
@@ -95,7 +95,8 @@ const PopularClasses = () => {
                                 <div
                                     className="text-2xl font-bold text-gray-900 dark:text-white">${cls.price}
                                 </div>
-                                <div>{cls.class_description.slice(0, 100)}</div>
+                                {/* <div>{cls.class_description.slice(0, 100)}</div> */}
+                                <div>{cls?.class_description?.slice(0, 100)}</div>
                                 <div className="flex items-center justify-between">
                                     <Rating
                                         style={{maxWidth: 130}}
@@ -105,7 +106,7 @@ const PopularClasses = () => {
                                     <span
                                         className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 -ml-4">{cls.total_ratings}</span>
                                     <a href="#"
-                                       className="btn btn-success btn-sm text-white">Enroll
+                                       className="text-white btn btn-success btn-sm">Enroll
                                         Class</a>
                                 </div>
                             </div>

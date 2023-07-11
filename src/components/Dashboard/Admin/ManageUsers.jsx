@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
-import { showErrorMessage } from "../../../utils/Notification";
+import {
+    showErrorMessage,
+    showSuccessMessage,
+} from "../../../utils/Notification";
 
 const ManageUsers = () => {
     const [dbUsers, setDbUsers] = useState([]);
@@ -11,14 +14,39 @@ const ManageUsers = () => {
             .get("http://localhost:8000/api/v1/users")
             .then((data) => {
                 setDbUsers(data.data);
-                console.log(data);
             })
             .catch((err) => {
                 showErrorMessage(err.message);
             });
     }, []);
+
+    const handleStatus = async (e, id) => {
+        const role = e.target.value;
+        const roleData = {
+            role,
+        };
+
+        await axios
+            .patch(`http://localhost:8000/api/v1/users/${id}`, roleData)
+            .then((res) => {
+                if (res?.status === 200) {
+                    showSuccessMessage("🆗 Status Updated Successfully");
+                }
+            })
+            .catch((err) => {
+                showErrorMessage(err.message);
+            });
+    };
     return (
         <div className="w-full overflow-x-auto">
+            <div className="my-2 mb-5 text-center">
+                <div className="space-y-3 text-center ">
+                    <h1 className="text-4xl font-bold md:text-5xl">
+                        Manage Users
+                    </h1>
+                    
+                </div>
+            </div>
             <table className="table table-zebra">
                 <thead>
                     <tr>
@@ -70,13 +98,27 @@ const ManageUsers = () => {
                                 </th> */}
                                 <th>Total enrolled courses</th>
                                 <th>
-                                    <select className="w-full max-w-[150px] select select-sm select-primary">
+                                    <select
+                                        onChange={(e) => {
+                                            handleStatus(e, user?._id);
+                                        }}
+                                        className="w-full max-w-[140px] select select-sm  btn btn-sm btn-info text-white"
+                                    >
                                         <option disabled selected>
                                             {user?.role}
                                         </option>
-                                        <option>Make Student</option>
-                                        <option>Make Instructor</option>
-                                        <option>Make Admin</option>
+                                        <option
+                                            value="instructor"
+                                            className="btn btn-sm btn-success "
+                                        >
+                                            Instructor
+                                        </option>
+                                        <option
+                                            value="admin"
+                                            className="btn btn-sm btn-error "
+                                        >
+                                            Admin
+                                        </option>
                                     </select>
                                 </th>
                                 <th>

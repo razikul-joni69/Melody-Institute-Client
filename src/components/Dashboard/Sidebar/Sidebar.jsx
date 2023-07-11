@@ -27,21 +27,26 @@ const Sidebar = () => {
                 showErrorMessage(err.message);
             });
 
-        const dbUserInfo = async () => {
-            await axios
-                .get(`http://localhost:8000/api/v1/users/${user?.email}`)
-                .then((data) => {
-                    setdbUser(data?.data);
-                })
-                .catch((err) => {
-                    showErrorMessage(err.message);
-                });
-        };
-        dbUserInfo();
+        axios
+            .get(`http://localhost:8000/api/v1/users/${user?.email}`)
+            .then((data) => {
+                setdbUser(data?.data);
+            })
+            .catch((err) => {
+                showErrorMessage(err.message);
+            });
+
         if (location.pathname == "/dashboard") {
-            navigate("/dashboard/selected-classes");
+            console.log(dbuser?.role);
+            if (dbuser?.role === "student") {
+                navigate("/dashboard/selected-classes");
+            } else if (dbuser?.role === "instructor") {
+                navigate("/dashboard/add-class");
+            } else if (dbuser?.role === "admin") {
+                navigate("/dashboard/manage-classes");
+            }
         }
-    }, [user]);
+    }, [user, dbuser]);
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
