@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { BsCreditCard2FrontFill } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import useGetCart from "../../../hooks/useGetCart.jsx";
 import { AuthContext } from "../../../providers/AuthProvider.jsx";
 import {
@@ -102,9 +103,14 @@ const SelectedClasses = () => {
                                         </button>
                                     </th>
                                     <th>
-                                        <button className="text-white btn btn-sm btn-success">
-                                            <BsCreditCard2FrontFill /> Pay
-                                        </button>
+                                        <Link
+                                            to={`/dashboard/checkout/${cls?._id}`}
+                                        >
+                                            <button className="text-white btn btn-sm btn-success">
+                                                <BsCreditCard2FrontFill /> Make
+                                                Payment
+                                            </button>
+                                        </Link>
                                     </th>
                                 </tr>
                             );

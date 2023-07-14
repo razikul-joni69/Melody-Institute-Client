@@ -3,13 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { CgClose } from "react-icons/cg";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../Providers/AuthProvider.jsx";
 import { showErrorMessage } from "../../../utils/Notification.js";
 import {
     adminNavigation,
     instructorNavigation,
     studentNavigation,
 } from "../Navigation/Navigation.jsx";
+import { AuthContext } from "../../../providers/AuthProvider.jsx";
 
 const Sidebar = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
@@ -68,7 +68,7 @@ const Sidebar = () => {
                     id="sidebar"
                     className={`${
                         sidebarVisible ? "md:visible" : "hidden"
-                    } w-full h-screen  p-3 space-y-2 md:w-60 bg-gray-50 text-gray-800`}
+                    } w-full  p-3 space-y-2 md:w-60 bg-gray-50 text-gray-800`}
                 >
                     <div className="flex items-center justify-between">
                         <h2 className="text-lg">Dashboard</h2>

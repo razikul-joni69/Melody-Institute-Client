@@ -13,6 +13,7 @@ import Instructors from "../pages/Instructors.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import CheckoutForm from "../components/Checkout/CheckoutForm.jsx";
 
 const router = createBrowserRouter([
     {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/enrolled-classes",
                         element: <EnrolledClasses />,
+                    },
+                    {
+                        path: "/dashboard/checkout/:classId",
+                        element: <CheckoutForm />,
                     },
                     {
                         path: "/dashboard/add-class",
