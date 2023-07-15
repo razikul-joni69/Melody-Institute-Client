@@ -5,10 +5,10 @@ import { NavLink } from "react-router-dom";
 
 export const studentNavigation = (
     <ul className="pt-2 pb-4 space-y-1 text-lg">
-        <li className="text-gray-900 bg-gray-100">
+        <li className="">
             <NavLink
                 to="/dashboard/selected-classes"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <BiSelectMultiple />
                 <span>Selected Classes</span>
@@ -17,7 +17,7 @@ export const studentNavigation = (
         <li>
             <NavLink
                 to="/dashboard/enrolled-classes"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <SiGoogleclassroom />
                 <span>Enrolled Classes</span>
@@ -25,8 +25,8 @@ export const studentNavigation = (
         </li>
         <li>
             <NavLink
-                to="/dashboard/"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                to="/dashboard/payment-history"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <RiSecurePaymentLine />
                 <span>Payment History</span>
@@ -37,10 +37,10 @@ export const studentNavigation = (
 
 export const instructorNavigation = (
     <ul className="pt-2 pb-4 space-y-1 text-lg">
-        <li className="text-gray-900 bg-gray-100">
+        <li className="">
             <NavLink
                 to="/dashboard/selected-classes"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <BiSelectMultiple />
                 <span>My Classes</span>
@@ -49,7 +49,7 @@ export const instructorNavigation = (
         <li>
             <NavLink
                 to="/dashboard/enrolled-classes"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <SiGoogleclassroom />
                 <span>Add Class</span>
@@ -58,7 +58,7 @@ export const instructorNavigation = (
         <li>
             <NavLink
                 to="/dashboard/"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <RiSecurePaymentLine />
                 <span>My Classes</span>
@@ -72,7 +72,7 @@ export const adminNavigation = (
         <li className="text-gray-900 bg-gray-100">
             <NavLink
                 to="/dashboard/manage-classes"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <BiSelectMultiple />
                 <span>Manage Classes</span>
@@ -81,7 +81,7 @@ export const adminNavigation = (
         <li>
             <NavLink
                 to="/dashboard/manage-users"
-                className="flex items-center p-2 space-x-3 rounded-md"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <SiGoogleclassroom />
                 <span>Manage Users</span>

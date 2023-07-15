@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
+import CheckoutForm from "../components/Checkout/CheckoutForm.jsx";
 import ManageClasses from "../components/Dashboard/Admin/ManageClasses.jsx";
 import ManageUsers from "../components/Dashboard/Admin/ManageUsers.jsx";
 import AddClass from "../components/Dashboard/Instructors/AddClass.jsx";
 import EnrolledClasses from "../components/Dashboard/Students/EnrolledClasses.jsx";
+import PaymentHistory from "../components/Dashboard/Students/PaymentHistory.jsx";
 import SelectedClasses from "../components/Dashboard/Students/SelectedClasses.jsx";
 import NotFound from "../components/NotFound/NotFound.jsx";
 import Pages from "../layout/Pages.jsx";
@@ -13,7 +15,7 @@ import Instructors from "../pages/Instructors.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
-import CheckoutForm from "../components/Checkout/CheckoutForm.jsx";
+import UserProfile from "../components/UserProfile/UserProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
                 element: <Classes />,
             },
             {
+                path: "/user/profile",
+                element: <UserProfile />,
+            },
+            {
                 path: "/dashboard",
                 element: (
                     <PrivateRoute>
@@ -51,6 +57,10 @@ const router = createBrowserRouter([
                     {
                         path: "/dashboard/enrolled-classes",
                         element: <EnrolledClasses />,
+                    },
+                    {
+                        path: "/dashboard/payment-history",
+                        element: <PaymentHistory />,
                     },
                     {
                         path: "/dashboard/checkout/:classId",

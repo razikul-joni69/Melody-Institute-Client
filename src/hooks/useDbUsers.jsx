@@ -3,20 +3,20 @@ import { useEffect, useState } from "react";
 import { showErrorMessage } from "../utils/Notification";
 
 const useDbUsers = () => {
-    const [users, setUsers] = useState([]);
+    const [dbUsers, setDbUsers] = useState([]);
     const [dbLoading, setDbLoading] = useState(true);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8000/api/v1/classes")
-            .then((data) => setUsers(data.data))
+            .get("http://localhost:8000/api/v1/users")
+            .then((data) => setDbUsers(data.data))
             .catch((err) => {
                 showErrorMessage(err.message);
             })
             .finally(() => setDbLoading(false));
     }, []);
 
-    return [users, dbLoading];
+    return [dbUsers, dbLoading];
 };
 
 export default useDbUsers;

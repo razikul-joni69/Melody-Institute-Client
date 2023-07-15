@@ -7,22 +7,23 @@ import { MdOutlineEventSeat } from "react-icons/md";
 import useClasses from "../../hooks/useClasses";
 import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
+import Loading from "../Loading/Loading";
 
 const ClassCard = () => {
-    const [classes] = useClasses();
+    const [classes, dbLoading] = useClasses();
     const { user } = useContext(AuthContext);
 
     const handleSaveToCart = async (cls) => {
         const cartData = {
             student_email: user?.email,
-            classes: [cls],
+            selected_classes: [cls],
+            enrolled_classes: [],
         };
         await axios
             .get(`http://localhost:8000/api/v1/cart/${user?.email}`)
             .then((res) => {
-                console.log(res?.data);
                 if (res?.data?.length) {
-                    const oldClasses = res?.data[0]?.classes;
+                    const oldClasses = res?.data[0]?.selected_classes;
                     const updateCartData = {
                         classes: [...oldClasses, cls],
                     };
@@ -32,7 +33,7 @@ const ClassCard = () => {
                     if (!exist) {
                         axios
                             .patch(
-                                `http://localhost:8000/api/v1/cart/${user?.email}`,
+                                `http://localhost:8000/api/v1/cart/${user?.email}?class_type=selected`,
                                 updateCartData
                             )
                             .then((res) => {
@@ -52,12 +53,10 @@ const ClassCard = () => {
                         showErrorMessage("Class already added to your cart!");
                     }
                 } else {
-                    console.log("data not Found");
                     axios
                         .post(`http://localhost:8000/api/v1/cart/`, cartData)
                         .then((res) => {
                             showSuccessMessage("👍 Class Added to cart!");
-                            console.log(res);
                         })
                         .catch((err) => {
                             showErrorMessage(err.message);
@@ -68,6 +67,10 @@ const ClassCard = () => {
                 showErrorMessage(err.message);
             });
     };
+
+    if (dbLoading) {
+        return <Loading />;
+    }
 
     return (
         <div className="my-10">

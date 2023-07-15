@@ -13,7 +13,7 @@ import Loading from "../../Loading/Loading.jsx";
 import Titles from "../../Titles/Titles.jsx";
 
 const SelectedClasses = () => {
-    const [selectedClasses, dbLoading, setReFetch] = useGetCart();
+    const [selectedClasses, , dbLoading, setReFetch] = useGetCart();
     const { user } = useContext(AuthContext);
 
     const handleClassDelete = (id) => {
@@ -22,7 +22,6 @@ const SelectedClasses = () => {
                 `http://localhost:8000/api/v1/cart?email=${user?.email}&id=${id}`
             )
             .then((res) => {
-                console.log(res);
                 if (res?.data?.lastErrorObject?.updatedExisting) {
                     showSuccessMessage("🆗 Class Deleted Successfully");
                     setReFetch(true);
@@ -38,13 +37,12 @@ const SelectedClasses = () => {
     }
 
     return (
-        // <div id="content" className="flex-auto">
         <div className="w-full overflow-x-auto">
             <Titles
                 title="Selected Classes"
                 subTitle={"Your Selected All Classes"}
             />
-            {selectedClasses.length > 0 ? (
+            {selectedClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead>
                         <tr>
@@ -79,7 +77,7 @@ const SelectedClasses = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <th className="text-xl">{cls?.price}</th>
+                                    <th className="text-xl">$ {cls?.price}</th>
                                     <th className="text-xl">
                                         {cls?.available_seats}
                                     </th>

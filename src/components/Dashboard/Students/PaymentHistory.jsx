@@ -2,7 +2,7 @@ import useGetCart from "../../../hooks/useGetCart";
 import Loading from "../../Loading/Loading";
 import Titles from "../../Titles/Titles";
 
-const EnrolledClasses = () => {
+const PaymentHistory = () => {
     const [, enrolled_classes, dbLoading] = useGetCart();
 
     if (dbLoading) {
@@ -12,8 +12,8 @@ const EnrolledClasses = () => {
     return (
         <div className="w-full overflow-x-auto">
             <Titles
-                title="Enrolled Classes"
-                subTitle={"Your Enrolled All Classes"}
+                title="Payment History"
+                subTitle={"Your Enrolled Classes Payment History"}
             />
             {enrolled_classes?.length > 0 ? (
                 <table className="table table-zebra">
@@ -21,10 +21,10 @@ const EnrolledClasses = () => {
                         <tr>
                             <th>#</th>
                             <th>Image / Class Name</th>
-                            <th>Price</th>
                             <th>Instructor</th>
                             <th>Payment Status</th>
-                            <th>Enrollment Status</th>
+                            <th>Payment Ammount</th>
+                            <th>Transection Id</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,7 +51,6 @@ const EnrolledClasses = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <th className="text-xl">$ {cls?.price}</th>
                                     <td>
                                         <span className="font-bold">
                                             {cls?.instructor_name}
@@ -62,16 +61,25 @@ const EnrolledClasses = () => {
                                         </span>
                                     </td>
                                     <td>
-                                        <button className="btn-sm btn-success btn">
+                                        <button className="btn-sm btn-primary btn">
                                             {
                                                 cls?.paymentInfo
                                                     ?.transectionStatus
                                             }
                                         </button>
                                     </td>
+                                    <td>
+                                        <button className="btn-sm btn-success btn">
+                                            ${" "}
+                                            {
+                                                cls?.paymentInfo
+                                                    ?.transectionAmount
+                                            }
+                                        </button>
+                                    </td>
                                     <th>
-                                        <button className="btn-sm btn-primary btn">
-                                            Enrolled
+                                        <button className="btn-sm btn-info btn">
+                                            {cls?.paymentInfo?.transectionId}
                                         </button>
                                     </th>
                                 </tr>
@@ -81,11 +89,11 @@ const EnrolledClasses = () => {
                 </table>
             ) : (
                 <div className="flex items-center justify-center h-screen text-4xl font-bold text-error">
-                    No Classes Found
+                    No Payment History Found
                 </div>
             )}
         </div>
     );
 };
 
-export default EnrolledClasses;
+export default PaymentHistory;
