@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { CgClose } from "react-icons/cg";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import useDbUsers from "../../../hooks/useDbUsers.jsx";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser.jsx";
 import { AuthContext } from "../../../providers/AuthProvider.jsx";
 import Loading from "../../Loading/Loading.jsx";
 import {
@@ -13,35 +13,29 @@ import {
 
 const Sidebar = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
-    // const [selectedClasses, setSelectedClasses] = useState([]);
-    const [currentDbUser, setCurrentDbUser] = useState({});
     const { user, loading, logOut } = useContext(AuthContext);
-    const [dbUsers, dbLoading] = useDbUsers();
     const location = useLocation();
     const navigate = useNavigate();
+    const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
 
     useEffect(() => {
-        const cDbUser = dbUsers?.find(
-            (dbuser) => dbuser?.email === user?.email
-        );
-        setCurrentDbUser(cDbUser);
-
         if (location.pathname == "/dashboard") {
-            if (currentDbUser?.role === "student") {
+            if (dbCurrentUser?.role === "student") {
                 navigate("/dashboard/selected-classes");
-            } else if (currentDbUser?.role === "instructor") {
-                navigate("/dashboard/add-class");
-            } else if (currentDbUser?.role === "admin") {
+            } else if (dbCurrentUser?.role === "instructor") {
+                navigate("/dashboard/all-classes");
+                console.log("hitted");
+            } else if (dbCurrentUser?.role === "admin") {
                 navigate("/dashboard/manage-classes");
             }
         }
-    }, [user, currentDbUser, dbUsers]);
+    }, [dbCurrentUser?.role, location?.pathname, navigate]);
 
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
-    if (dbLoading || loading) {
+    if (loading || dbCurrentUserLoading) {
         return <Loading />;
     }
 
@@ -94,29 +88,31 @@ const Sidebar = () => {
                     </div>
                     <div className="grid grid-cols-1 justify-items-center">
                         <img
-                            src={user?.photoURL}
+                            src={dbCurrentUser?.photoURL}
                             alt=""
                             className="w-24 h-24 bg-gray-500 rounded-full"
                         />
                         <div className="space-y-2">
                             <h2 className="text-lg font-semibold text-center">
-                                {user?.displayName}
+                                {dbCurrentUser?.name}
                             </h2>
                             <h5 className="text-center">
-                                <span className=" badge">{user?.email}</span>
+                                <span className=" badge">
+                                    {dbCurrentUser?.email}
+                                </span>
                             </h5>
                             <h5 className="text-center">
                                 <span className="font-bold text-white badge badge-info">
-                                    {currentDbUser?.role?.toUpperCase()}
+                                    {dbCurrentUser?.role?.toUpperCase()}
                                 </span>
                             </h5>
                         </div>
                     </div>
                     <div className="divide-y divide-gray-300">
-                        {currentDbUser?.role === "student" && studentNavigation}
-                        {currentDbUser?.role === "instructor" &&
+                        {dbCurrentUser?.role === "student" && studentNavigation}
+                        {dbCurrentUser?.role === "instructor" &&
                             instructorNavigation}
-                        {currentDbUser?.role === "admin" && adminNavigation}
+                        {dbCurrentUser?.role === "admin" && adminNavigation}
                         <ul className="pt-4 pb-2 space-y-1 text-sm">
                             <li>
                                 <NavLink

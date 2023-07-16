@@ -39,16 +39,16 @@ export const instructorNavigation = (
     <ul className="pt-2 pb-4 space-y-1 text-lg">
         <li className="">
             <NavLink
-                to="/dashboard/selected-classes"
+                to="/dashboard/all-classes"
                 className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <BiSelectMultiple />
-                <span>My Classes</span>
+                <span>All Classes</span>
             </NavLink>
         </li>
         <li>
             <NavLink
-                to="/dashboard/enrolled-classes"
+                to="/dashboard/add-class"
                 className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
                 <SiGoogleclassroom />
@@ -57,11 +57,20 @@ export const instructorNavigation = (
         </li>
         <li>
             <NavLink
-                to="/dashboard/"
+                to="/dashboard/approved-classes"
                 className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
             >
-                <RiSecurePaymentLine />
-                <span>My Classes</span>
+                <SiGoogleclassroom />
+                <span>Approved Class</span>
+            </NavLink>
+        </li>
+        <li>
+            <NavLink
+                to="/dashboard/rejected-classes"
+                className="flex items-center p-2 space-x-3 rounded-md btn-ghost"
+            >
+                <SiGoogleclassroom />
+                <span>Rejected Class</span>
             </NavLink>
         </li>
     </ul>

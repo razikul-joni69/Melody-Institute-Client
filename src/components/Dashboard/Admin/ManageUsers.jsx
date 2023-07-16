@@ -1,24 +1,14 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import useGetAllUsers from "../../../hooks/useGetAllUsers";
 import {
     showErrorMessage,
     showSuccessMessage,
 } from "../../../utils/Notification";
+import Loading from "../../Loading/Loading";
 
 const ManageUsers = () => {
-    const [dbUsers, setDbUsers] = useState([]);
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:8000/api/v1/users")
-            .then((data) => {
-                setDbUsers(data.data);
-            })
-            .catch((err) => {
-                showErrorMessage(err.message);
-            });
-    }, []);
+    const [dbAllUsers, dbAllUsersLoading] = useGetAllUsers();
 
     const handleStatus = async (e, id) => {
         const role = e.target.value;
@@ -37,6 +27,11 @@ const ManageUsers = () => {
                 showErrorMessage(err.message);
             });
     };
+
+    if (dbAllUsersLoading) {
+        return <Loading />;
+    }
+
     return (
         <div className="w-full overflow-x-auto">
             <div className="my-2 mb-5 text-center">
@@ -57,7 +52,7 @@ const ManageUsers = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {dbUsers.map((user, index) => {
+                    {dbAllUsers.map((user, index) => {
                         return (
                             <tr key={user._id}>
                                 <th>
@@ -121,7 +116,14 @@ const ManageUsers = () => {
                                     </select>
                                 </th>
                                 <th>
-                                    <button className="text-white btn btn-sm btn-error">
+                                    <button
+                                        onClick={() =>
+                                            showErrorMessage(
+                                                "Delete User not yet implemented"
+                                            )
+                                        }
+                                        className="text-white btn btn-sm btn-error"
+                                    >
                                         <FaTrashAlt /> Delete
                                     </button>
                                 </th>

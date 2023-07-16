@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 
 const Navbar = () => {
@@ -100,20 +100,27 @@ const Navbar = () => {
                         >
                             <div className="w-10 rounded-full">
                                 <img
-                                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                                    src={
+                                        user?.photoURL
+                                            ? user?.photoURL
+                                            : "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                                    }
                                     alt="User Profile Photo"
                                 />
                             </div>
                         </label>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64"
                         >
                             <li>
-                                <a className="justify-between">
-                                    Profile
-                                    <span className="badge">New</span>
-                                </a>
+                                <Link
+                                    to="/user/profile"
+                                    className="justify-between"
+                                >
+                                    {user?.displayName}
+                                    <span className="badge">Profile</span>
+                                </Link>
                             </li>
                             <li onClick={() => logOut()}>
                                 <a>LogOut</a>

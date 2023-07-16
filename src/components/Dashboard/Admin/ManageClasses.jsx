@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaTrashAlt } from "react-icons/fa";
 import {
     showErrorMessage,
     showSuccessMessage,
@@ -86,9 +85,10 @@ const ManageClasses = () => {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Image / Class Name / Price</th>
+                        <th>Image / Class Name</th>
+                        <th>Price</th>
                         <th>Instructor Details</th>
-                        <th>Total Courses</th>
+                        <th>Total Seats</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -110,16 +110,18 @@ const ManageClasses = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="font-bold">
+                                            <div className="font-bold text-[20px]">
                                                 {cls?.class_name}
                                             </div>
-                                            <div className="text-sm opacity-50">
+                                            {/* <div className="text-sm opacity-50">
                                                 ${cls?.price}
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </td>
-
+                                <th className="font-bold text-[20px]">
+                                    $ {cls?.price}
+                                </th>
                                 <th>
                                     <div>
                                         <div className="font-bold">
@@ -130,17 +132,17 @@ const ManageClasses = () => {
                                         </div>
                                     </div>
                                 </th>
-
-                                <th>Total courses</th>
+                                <th>{cls?.total_seats}</th>
                                 <th>
                                     <select
                                         onChange={(e) => {
                                             handleStatus(e);
                                             setStatusId(cls?._id);
                                         }}
+                                        defaultValue={cls?.status}
                                         className="w-full max-w-[130px] select select-sm  btn btn-sm btn-info text-white"
                                     >
-                                        <option disabled selected>
+                                        <option disabled value="pending">
                                             {cls?.status}
                                         </option>
                                         <option
@@ -156,11 +158,6 @@ const ManageClasses = () => {
                                             Reject
                                         </option>
                                     </select>
-                                </th>
-                                <th>
-                                    <button className="text-white btn btn-sm btn-error">
-                                        <FaTrashAlt /> Delete
-                                    </button>
                                 </th>
                             </tr>
                         );

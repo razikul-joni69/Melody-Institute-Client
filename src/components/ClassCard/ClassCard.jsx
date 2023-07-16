@@ -10,7 +10,7 @@ import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
 import Loading from "../Loading/Loading";
 
 const ClassCard = () => {
-    const [classes, dbLoading] = useClasses();
+    const [, approvedClasses, , dbLoading] = useClasses();
     const { user } = useContext(AuthContext);
 
     const handleSaveToCart = async (cls) => {
@@ -37,7 +37,6 @@ const ClassCard = () => {
                                 updateCartData
                             )
                             .then((res) => {
-                                console.log(res.data);
                                 if (
                                     res?.data?.lastErrorObject?.updatedExisting
                                 ) {
@@ -75,7 +74,7 @@ const ClassCard = () => {
     return (
         <div className="my-10">
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 justify-items-center">
-                {classes.map((cls) => (
+                {approvedClasses.map((cls) => (
                     <div
                         key={cls._id}
                         className={`w-full max-w-sm ${
@@ -249,7 +248,6 @@ const ClassCard = () => {
                                 <span className="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 -ml-4">
                                     {cls?.enrolled_students}
                                 </span>
-                                {/* <Link to={"/test"}> */}
                                 <button
                                     onClick={() => handleSaveToCart(cls)}
                                     disabled={
@@ -261,9 +259,8 @@ const ClassCard = () => {
                                             : "btn-warning disabled opacity-50 cursor-not-allowed"
                                     } btn btn-sm text-white`}
                                 >
-                                    Enroll Class
+                                    Add to Cart
                                 </button>
-                                {/* </Link> */}
                             </div>
                         </div>
                     </div>

@@ -3,10 +3,13 @@ import { showErrorMessage, showSuccessMessage } from "./Notification";
 
 const saveUserToDb = async (name, email, photoURL) => {
     const user = {
-        address: null,
         name,
         email,
         photoURL,
+        total_students: 0,
+        total_classes: 0,
+        enrolled_courses: 0,
+        address: null,
         gender: null,
         phone: null,
         role: "student",

@@ -1,37 +1,9 @@
-import axios from "axios";
-import { useContext } from "react";
-import { BsCreditCard2FrontFill } from "react-icons/bs";
-import { FaTrashAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import useGetCart from "../../../hooks/useGetCart.jsx";
-import { AuthContext } from "../../../providers/AuthProvider.jsx";
-import {
-    showErrorMessage,
-    showSuccessMessage,
-} from "../../../utils/Notification.js";
-import Loading from "../../Loading/Loading.jsx";
-import Titles from "../../Titles/Titles.jsx";
+import useClasses from "../../../hooks/useClasses";
+import Loading from "../../Loading/Loading";
+import Titles from "../../Titles/Titles";
 
-const SelectedClasses = () => {
-    const [selectedClasses, , dbLoading, setReFetch] = useGetCart();
-    const { user } = useContext(AuthContext);
-    console.log(selectedClasses);
-
-    const handleClassDelete = (id) => {
-        axios
-            .delete(
-                `http://localhost:8000/api/v1/cart?email=${user?.email}&id=${id}`
-            )
-            .then((res) => {
-                if (res?.data?.lastErrorObject?.updatedExisting) {
-                    showSuccessMessage("🆗 Class Deleted Successfully");
-                    setReFetch(true);
-                }
-            })
-            .catch((err) => {
-                showErrorMessage(err.message);
-            });
-    };
+const ApprovedClasses = () => {
+    const [, approvedClasses, , dbLoading] = useClasses();
 
     if (dbLoading) {
         return <Loading />;
@@ -40,22 +12,24 @@ const SelectedClasses = () => {
     return (
         <div className="w-full overflow-x-auto">
             <Titles
-                title="Selected Classes"
-                subTitle={"Your Selected All Classes"}
+                title="Approved Classes"
+                subTitle={"Your All Approved Classes"}
             />
-            {selectedClasses?.length > 0 ? (
+            {approvedClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Image / Class Name</th>
                             <th>Price</th>
-                            <th>Available Seats</th>
                             <th>Instructor</th>
+                            <th>Enrolled Students</th>
+                            <th>Available Seats</th>
+                            <th>Approved Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {selectedClasses?.map((cls, index) => {
+                        {approvedClasses?.map((cls, index) => {
                             return (
                                 <tr key={cls._id}>
                                     <th>
@@ -79,9 +53,6 @@ const SelectedClasses = () => {
                                         </div>
                                     </td>
                                     <th className="text-xl">$ {cls?.price}</th>
-                                    <th className="text-xl">
-                                        {cls?.available_seats}
-                                    </th>
                                     <td>
                                         <span className="font-bold">
                                             {cls?.instructor_name}
@@ -91,26 +62,34 @@ const SelectedClasses = () => {
                                             {cls?.instructor_email}
                                         </span>
                                     </td>
-                                    <th>
-                                        <button
-                                            onClick={() =>
-                                                handleClassDelete(cls?._id)
-                                            }
-                                            className="text-white btn btn-sm btn-error"
-                                        >
-                                            <FaTrashAlt /> Delete
+                                    <td>
+                                        <button className="btn btn-sm btn-info">
+                                            {cls?.enrolled_students}
                                         </button>
-                                    </th>
-                                    <th>
-                                        <Link
-                                            to={`/dashboard/checkout/${cls?._id}`}
+                                    </td>
+                                    <td>
+                                        <button className="btn btn-sm btn-warning">
+                                            {cls?.available_seats}
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button
+                                            className={`btn btn-sm ${
+                                                cls?.status === "pending" &&
+                                                "btn-info"
+                                            } 
+                                            ${
+                                                cls?.status === "approved" &&
+                                                "btn-success"
+                                            }
+                                            ${
+                                                cls?.status === "rejected" &&
+                                                "btn-error"
+                                            }`}
                                         >
-                                            <button className="text-white btn btn-sm btn-success">
-                                                <BsCreditCard2FrontFill /> Make
-                                                Payment
-                                            </button>
-                                        </Link>
-                                    </th>
+                                            {cls?.status}
+                                        </button>
+                                    </td>
                                 </tr>
                             );
                         })}
@@ -124,5 +103,4 @@ const SelectedClasses = () => {
         </div>
     );
 };
-
-export default SelectedClasses;
+export default ApprovedClasses;

@@ -47,6 +47,15 @@ const AddClass = () => {
                                     showSuccessMessage(
                                         "🏛️ Class Created Successfully!"
                                     );
+                                    axios.patch(
+                                        `http://localhost:8000/api/v1/users/${user?.email}?addNewClass=true`
+                                    ).then((res) => {
+                                        // navigate("/user/profile");
+                                        console.log(res?.data);
+
+                                    }).catch((err) => {
+                                        showErrorMessage(err.message);
+                                    })
                                 }
                             })
                             .catch((err) => {

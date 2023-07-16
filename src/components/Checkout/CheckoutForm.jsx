@@ -7,11 +7,12 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
 import Loading from "../Loading/Loading";
 import "./CheckoutForm.css";
+
 const CheckoutForm = () => {
     const stripePromise = loadStripe(import.meta.env.VITE_payment_getway_pk);
     return (
@@ -33,11 +34,12 @@ const Payment = () => {
     const { classId } = useParams();
     const [cls, setCls] = useState({});
     const [dbLoading, setDbLoading] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setDbLoading(true);
         axios
-            .get(`http://localhost:8000/api/v1/classes/${classId}`)
+            .get(`http://localhost:8000/api/v1/classes?classId=${classId}`)
             .then((res) => {
                 setCls(res?.data[0]);
                 setDbLoading(false);
@@ -58,7 +60,7 @@ const Payment = () => {
             .catch((err) => {
                 showErrorMessage(err.message);
             });
-    }, []);
+    }, [classId]);
 
     const handleUpdateCart = async () => {
         await axios
@@ -85,6 +87,7 @@ const Payment = () => {
                                     showSuccessMessage(
                                         "👍 Enrolled New Class!"
                                     );
+                                    navigate("/dashboard/enrolled-classes");
                                 }
                             })
                             .catch((err) => {
@@ -97,7 +100,10 @@ const Payment = () => {
                     axios
                         .post(`http://localhost:8000/api/v1/cart/`, cls)
                         .then((res) => {
-                            showSuccessMessage("👍 Enrolled to New Course!");
+                            if (res?.data?.lastErrorObject?.updatedExisting) {
+                                showSuccessMessage("👍 Enrolled New Class!");
+                                navigate("/dashboard/enrolled-classes");
+                            }
                         })
                         .catch((err) => {
                             showErrorMessage(err.message);
