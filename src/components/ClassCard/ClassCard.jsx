@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { BsBookHalf } from "react-icons/bs";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdOutlineEventSeat } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useGetAllClasses from "../../hooks/useGetAllClasses";
 import { AuthContext } from "../../providers/AuthProvider";
@@ -143,11 +143,11 @@ const ClassCard = () => {
                                 </p>
                             </div>
                             <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                <div className=" bg-base-100">
+                                <div className=" bg-base-100 dark:bg-gray-800 dark:border-gray-700">
                                     <div className="dropdown dropdown-end">
                                         <label
                                             tabIndex={0}
-                                            className="btn btn-ghost btn-circle btn-md avatar"
+                                            className="btn btn-ghost btn-circle btn-md avatar "
                                         >
                                             <svg
                                                 className="h-8"
@@ -171,7 +171,9 @@ const ClassCard = () => {
                                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                                         >
                                             <li>
-                                                <a>Instructor Profile</a>
+                                                <Link to="/user/profile">
+                                                    Instructor Profile
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -187,14 +189,11 @@ const ClassCard = () => {
                                     alt="product image"
                                 />
                             </a>
-                            {/* <span className="absolute top-0 right-0 text-white rounded-full btn btn-sm btn-error">
-                                {cls?.tag}
-                            </span> */}
                         </div>
                         <hr className="my-4" />
                         <div className="space-y-2">
                             <div
-                                className={`grid grid-cols-2 gap-2 ${
+                                className={`grid grid-cols-2 gap-2 dark:text-white ${
                                     cls?.available_seats > 0
                                         ? "text-gray-500"
                                         : "text-white"

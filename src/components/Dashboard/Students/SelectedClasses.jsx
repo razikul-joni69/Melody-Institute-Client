@@ -51,14 +51,14 @@ const SelectedClasses = () => {
     }
 
     return (
-        <div className="w-full overflow-x-auto">
+        <div className="w-full overflow-x-auto dark:text-white">
             <Titles
                 title="Selected Classes"
                 subTitle={"Your Selected All Classes"}
             />
             {selectedClasses?.length > 0 ? (
                 <table className="table table-zebra">
-                    <thead>
+                    <thead className="dark:text-white">
                         <tr>
                             <th>#</th>
                             <th>Image / Class Name</th>

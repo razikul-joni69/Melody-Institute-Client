@@ -3,7 +3,7 @@ import Titles from "../components/Titles/Titles";
 
 const Instructors = () => {
     return (
-        <div className="my-10">
+        <div className="py-10 dark:bg-[#111827]">
             <Titles
                 title="All of our Instructors"
                 subTitle="Choose your favourite instructors class."

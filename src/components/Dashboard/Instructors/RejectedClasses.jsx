@@ -17,7 +17,7 @@ const RejectedClasses = () => {
             />
             {rejectedClasses?.length > 0 ? (
                 <table className="table table-zebra">
-                    <thead>
+                    <thead className="dark:text-white">
                         <tr>
                             <th>#</th>
                             <th>Image / Class Name</th>

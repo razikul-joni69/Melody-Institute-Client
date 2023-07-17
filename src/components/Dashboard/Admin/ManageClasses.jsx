@@ -74,7 +74,7 @@ const ManageClasses = () => {
                 </div>
             </div>
             <table className="table table-zebra">
-                <thead>
+                <thead className="dark:text-white">
                     <tr>
                         <th>#</th>
                         <th>Image / Class Name</th>
@@ -105,9 +105,6 @@ const ManageClasses = () => {
                                             <div className="font-bold text-[20px]">
                                                 {cls?.class_name}
                                             </div>
-                                            {/* <div className="text-sm opacity-50">
-                                                ${cls?.price}
-                                            </div> */}
                                         </div>
                                     </div>
                                 </td>

@@ -14,7 +14,7 @@ const Navbar = () => {
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5"
+                            className="w-5 h-"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -29,7 +29,7 @@ const Navbar = () => {
                     </label>
                     <ul
                         tabIndex={0}
-                        className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                        className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 dark:text-white"
                     >
                         {routes.map((route, index) => (
                             <li key={index}>
@@ -42,13 +42,13 @@ const Navbar = () => {
                 </div>
                 <NavLink
                     to={"/home"}
-                    className="text-xl normal-case btn btn-ghost"
+                    className="text-xl normal-case btn btn-ghost dark:text-white"
                 >
                     Melody Institute
                 </NavLink>
             </div>
             <div className="hidden navbar-center lg:flex">
-                <ul className="px-1 menu menu-horizontal">
+                <ul className="px-1 menu menu-horizontal  dark:text-white ">
                     {routes.map((route, index) => (
                         <li key={index}>
                             <NavLink to={route.toLowerCase()}>{route}</NavLink>
@@ -61,7 +61,7 @@ const Navbar = () => {
                     <button className="btn btn-ghost btn-circle">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5"
+                            className="w-5 h-5 dark:text-white"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -78,7 +78,7 @@ const Navbar = () => {
                         <div className="indicator">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="w-5 h-5"
+                                className="w-5 h-5 dark:text-white"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -111,18 +111,23 @@ const Navbar = () => {
                         </label>
                         <ul
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64"
+                            className="dark:text-white menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-64"
                         >
                             <li>
                                 <Link
                                     to="/user/profile"
-                                    className="justify-between"
+                                    className="justify-between dark:hover:bg-white"
                                 >
                                     {user?.displayName}
-                                    <span className="badge">Profile</span>
+                                    <span className="badge dark:text-white ">
+                                        Profile
+                                    </span>
                                 </Link>
                             </li>
-                            <li onClick={() => logOut()}>
+                            <li
+                                className="dark:hover:bg-white dark:hover:text-black rounded-lg"
+                                onClick={() => logOut()}
+                            >
                                 <a>LogOut</a>
                             </li>
                         </ul>

@@ -45,7 +45,7 @@ const ManageUsers = () => {
                 </div>
             </div>
             <table className="table table-zebra">
-                <thead>
+                <thead className="dark:text-white">
                     <tr>
                         <th>#</th>
                         <th>Image / Class Name / Email</th>
