@@ -13,7 +13,7 @@ import {
 
 const Sidebar = () => {
     const [sidebarVisible, setSidebarVisible] = useState(true);
-    const { user, loading, logOut } = useContext(AuthContext);
+    const { logOut } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
     const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
@@ -24,7 +24,6 @@ const Sidebar = () => {
                 navigate("/dashboard/selected-classes");
             } else if (dbCurrentUser?.role === "instructor") {
                 navigate("/dashboard/all-classes");
-                console.log("hitted");
             } else if (dbCurrentUser?.role === "admin") {
                 navigate("/dashboard/manage-classes");
             }
@@ -35,15 +34,18 @@ const Sidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
 
-    if (loading || dbCurrentUserLoading) {
+    if (dbCurrentUserLoading) {
         return <Loading />;
     }
 
     return (
         <div>
-            <button onClick={toggleSidebar}>
+            <button
+                className={`${sidebarVisible ? "hidden" : "visible"}`}
+                onClick={toggleSidebar}
+            >
                 {!sidebarVisible && (
-                    <AiOutlineMenuUnfold className={`h-6 w-6 text-green-600`} />
+                    <AiOutlineMenuUnfold className={`h-8 w-8 text-green-600`} />
                 )}{" "}
             </button>
 
@@ -154,7 +156,7 @@ const Sidebar = () => {
                         </ul>
                     </div>
                 </div>
-                <div id="content" className="flex-auto">
+                <div id="content" className={`flex-auto`}>
                     <Outlet />
                 </div>
             </div>

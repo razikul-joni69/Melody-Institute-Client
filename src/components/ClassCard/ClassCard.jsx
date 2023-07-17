@@ -4,16 +4,43 @@ import { useContext } from "react";
 import { BsBookHalf } from "react-icons/bs";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdOutlineEventSeat } from "react-icons/md";
-import useClasses from "../../hooks/useClasses";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import useGetAllClasses from "../../hooks/useGetAllClasses";
 import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
 import Loading from "../Loading/Loading";
 
 const ClassCard = () => {
-    const [, approvedClasses, , dbLoading] = useClasses();
+    const [, approvedClasses, , dbAllClassesLoading, refetch] =
+        useGetAllClasses();
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSaveToCart = async (cls) => {
+        if (!user) {
+            Swal.fire({
+                title: "Are you sure You Want To Login?",
+                text: "You have to login/ register for add to cart.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Login!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate("/login");
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Navigated to Login!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
+            });
+        }
+
         const cartData = {
             student_email: user?.email,
             selected_classes: [cls],
@@ -43,6 +70,7 @@ const ClassCard = () => {
                                     showSuccessMessage(
                                         "👍 Class Added to cart!"
                                     );
+                                    refetch();
                                 }
                             })
                             .catch((err) => {
@@ -55,7 +83,10 @@ const ClassCard = () => {
                     axios
                         .post(`http://localhost:8000/api/v1/cart/`, cartData)
                         .then((res) => {
-                            showSuccessMessage("👍 Class Added to cart!");
+                            if (res?.data?.insertedId) {
+                                showSuccessMessage("👍 Class Added to cart!");
+                                refetch();
+                            }
                         })
                         .catch((err) => {
                             showErrorMessage(err.message);
@@ -67,7 +98,7 @@ const ClassCard = () => {
             });
     };
 
-    if (dbLoading) {
+    if (dbAllClassesLoading) {
         return <Loading />;
     }
 

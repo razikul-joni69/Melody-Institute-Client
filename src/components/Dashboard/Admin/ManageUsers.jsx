@@ -8,7 +8,7 @@ import {
 import Loading from "../../Loading/Loading";
 
 const ManageUsers = () => {
-    const [dbAllUsers, dbAllUsersLoading] = useGetAllUsers();
+    const [dbAllUsers, dbAllUsersLoading, refetch] = useGetAllUsers();
 
     const handleStatus = async (e, id) => {
         const role = e.target.value;
@@ -17,10 +17,13 @@ const ManageUsers = () => {
         };
 
         await axios
-            .patch(`http://localhost:8000/api/v1/users/${id}`, roleData)
+            .patch(`http://localhost:8000/api/v1/users?id=${id}`, roleData)
             .then((res) => {
-                if (res?.status === 200) {
+                if (res?.data?.lastErrorObject?.updatedExisting) {
                     showSuccessMessage("🆗 Status Updated Successfully");
+                    refetch();
+                } else {
+                    showErrorMessage("Can not update");
                 }
             })
             .catch((err) => {
@@ -45,8 +48,8 @@ const ManageUsers = () => {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Image / Class Name</th>
-                        <th>Enrolled Courses</th>
+                        <th>Image / Class Name / Email</th>
+                        <th>Enrolled / Total Classes</th>
                         <th>User Role</th>
                         <th>Delete User</th>
                     </tr>
@@ -78,27 +81,21 @@ const ManageUsers = () => {
                                         </div>
                                     </div>
                                 </td>
-                                {/* <td>
-                                    {user.}
-                                    <br />
-                                    <span className="badge badge-ghost badge-sm">
-                                        {cls.instructor_email}
-                                    </span>
-                                </td> */}
-                                {/* <th>
-                                    <button className="text-white btn btn-sm btn-success">
-                                        <BsCreditCard2FrontFill /> {user.role}
-                                    </button>
-                                </th> */}
-                                <th>Total enrolled courses</th>
+                                <th>Null</th>
                                 <th>
                                     <select
                                         onChange={(e) => {
                                             handleStatus(e, user?._id);
                                         }}
-                                        className="w-full max-w-[140px] select select-sm  btn btn-sm btn-info text-white"
+                                        defaultValue={user?.role}
+                                        className={`w-full max-w-[140px] select select-sm  btn btn-sm btn-info text-white ${
+                                            (user?.role === "instructor" &&
+                                                "btn-success") ||
+                                            (user?.role === "admin" &&
+                                                "btn-error")
+                                        }`}
                                     >
-                                        <option disabled selected>
+                                        <option disabled value="student">
                                             {user?.role}
                                         </option>
                                         <option

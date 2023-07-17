@@ -50,6 +50,9 @@ dependencies:
   sort-by:
     specifier: ^1.2.0
     version: 1.2.0
+  sweetalert2:
+    specifier: ^11.7.18
+    version: 11.7.18
   swiper:
     specifier: ^10.0.3
     version: 10.0.3
@@ -3183,6 +3186,10 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /sweetalert2@11.7.18:
+    resolution: {integrity: sha512-Njl5JTDasSP8yRX9cpLdy2fdxHZYPYNmiIGNZykF2Zt1UHIvurwt/W2LmlGe5RbyMDHYDXuHqlD1Q8Vr5/mqlA==}
+    dev: false
 
   /swiper@10.0.3:
     resolution: {integrity: sha512-jpsUDo+EmNq7N59vRCo5aDZXLF8EfWJWlTdm1jkqEH+ph8DuMTJuLjcNunN8Q88bqVxo6vceYBGIrpRIwrEGcA==}

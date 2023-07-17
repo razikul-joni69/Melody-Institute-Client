@@ -1,22 +1,26 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { showErrorMessage } from "../utils/Notification";
+import { useContext } from "react";
+import { AuthContext } from "../providers/AuthProvider";
 
-const useInstructorClasse = (email) => {
-    const [classes, setClasses] = useState([]);
-    const [dbLoading, setDbLoading] = useState(true);
+const useInstructorClasse = () => {
+    const { user, loading } = useContext(AuthContext);
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:8000/api/v1/classes/${email}`)
-            .then((data) => setClasses(data.data))
-            .catch((err) => {
-                showErrorMessage(err.message);
-            })
-            .finally(() => setDbLoading(false));
-    }, [email]);
-
-    return [classes, dbLoading];
+    const {
+        refetch,
+        data: dbCurrentInstructorClasses,
+        isLoading: dbCurrentInstructorLoading,
+    } = useQuery({
+        queryKey: ["dbAllUsers", user?.email],
+        enabled: !loading,
+        queryFn: async () => {
+            const res = await axios.get(
+                `http://localhost:8000/api/v1/classes/${user?.email}`
+            );
+            return res.data;
+        },
+    });
+    return [dbCurrentInstructorClasses, dbCurrentInstructorLoading, refetch];
 };
 
 export default useInstructorClasse;

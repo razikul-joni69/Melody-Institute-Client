@@ -1,11 +1,11 @@
-import useClasses from "../../../hooks/useClasses";
+import useGetAllClasses from "../../../hooks/useGetAllClasses";
 import Loading from "../../Loading/Loading";
 import Titles from "../../Titles/Titles";
 
 const ApprovedClasses = () => {
-    const [, approvedClasses, , dbLoading] = useClasses();
+    const [, approvedClasses, , dbAllClassesLoading, ,] = useGetAllClasses();
 
-    if (dbLoading) {
+    if (dbAllClassesLoading) {
         return <Loading />;
     }
 

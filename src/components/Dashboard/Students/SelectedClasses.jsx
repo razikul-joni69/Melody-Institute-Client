@@ -3,34 +3,47 @@ import { useContext } from "react";
 import { BsCreditCard2FrontFill } from "react-icons/bs";
 import { FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import useGetCart from "../../../hooks/useGetCart.jsx";
 import { AuthContext } from "../../../providers/AuthProvider.jsx";
-import {
-    showErrorMessage,
-    showSuccessMessage,
-} from "../../../utils/Notification.js";
+import { showErrorMessage } from "../../../utils/Notification.js";
 import Loading from "../../Loading/Loading.jsx";
 import Titles from "../../Titles/Titles.jsx";
 
 const SelectedClasses = () => {
     const [selectedClasses, , dbLoading, setReFetch] = useGetCart();
     const { user } = useContext(AuthContext);
-    console.log(selectedClasses);
 
     const handleClassDelete = (id) => {
-        axios
-            .delete(
-                `http://localhost:8000/api/v1/cart?email=${user?.email}&id=${id}`
-            )
-            .then((res) => {
-                if (res?.data?.lastErrorObject?.updatedExisting) {
-                    showSuccessMessage("🆗 Class Deleted Successfully");
-                    setReFetch(true);
-                }
-            })
-            .catch((err) => {
-                showErrorMessage(err.message);
-            });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .delete(
+                        `http://localhost:8000/api/v1/cart?email=${user?.email}&id=${id}`
+                    )
+                    .then((res) => {
+                        if (res?.data?.lastErrorObject?.updatedExisting) {
+                            Swal.fire({
+                                title: "Deleted",
+                                icon: "success",
+                                timer: 1500,
+                            });
+                            setReFetch(true);
+                        }
+                    })
+                    .catch((err) => {
+                        showErrorMessage(err.message);
+                    });
+            }
+        });
     };
 
     if (dbLoading) {
@@ -52,6 +65,8 @@ const SelectedClasses = () => {
                             <th>Price</th>
                             <th>Available Seats</th>
                             <th>Instructor</th>
+                            <th>Delete</th>
+                            <th>Make Payment</th>
                         </tr>
                     </thead>
                     <tbody>

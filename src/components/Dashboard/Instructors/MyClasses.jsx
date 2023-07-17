@@ -1,20 +1,18 @@
-import { useContext } from "react";
 import useInstructorClasse from "../../../hooks/useInstructorClass";
-import { AuthContext } from "../../../providers/AuthProvider";
 import Loading from "../../Loading/Loading";
 import Titles from "../../Titles/Titles";
 
 const MyClasses = () => {
-    const { user } = useContext(AuthContext);
-    const [classes, dbLoading] = useInstructorClasse(user?.email);
+    const [dbCurrentInstructorClasses, dbCurrentInstructorLoading] =
+        useInstructorClasse();
 
-    if (dbLoading) {
+    if (dbCurrentInstructorLoading) {
         return <Loading />;
     }
     return (
         <div className="w-full overflow-x-auto">
             <Titles title="My Classes" subTitle={"My All Classes"} />
-            {classes?.length > 0 ? (
+            {dbCurrentInstructorClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead>
                         <tr>
@@ -27,7 +25,7 @@ const MyClasses = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {classes?.map((cls, index) => {
+                        {dbCurrentInstructorClasses?.map((cls, index) => {
                             return (
                                 <tr key={cls._id}>
                                     <th>

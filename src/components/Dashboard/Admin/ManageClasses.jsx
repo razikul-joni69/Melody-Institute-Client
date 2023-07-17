@@ -1,31 +1,22 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useGetAllClasses from "../../../hooks/useGetAllClasses";
 import {
     showErrorMessage,
     showSuccessMessage,
 } from "../../../utils/Notification";
+import Loading from "../../Loading/Loading";
 
 const ManageClasses = () => {
-    const [classes, setClasses] = useState([]);
     const [statusId, setStatusId] = useState("");
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:8000/api/v1/classes")
-            .then((data) => {
-                setClasses(data.data);
-            })
-            .catch((err) => {
-                showErrorMessage(err.message);
-            });
-    }, []);
+    const [allClasses, , , dbAllClassesLoading, refetch] = useGetAllClasses();
 
     const handleFeedback = async (e) => {
-        const feedback = await e.target.feedback.value;
+        const rejectionFeedback = await e.target.feedback.value;
         const status = "rejected";
         const rejectionData = {
-            feedback,
             status,
+            rejectionFeedback,
         };
 
         await axios
@@ -34,8 +25,9 @@ const ManageClasses = () => {
                 rejectionData
             )
             .then((res) => {
-                if (res?.status === 200) {
+                if (res?.data?.lastErrorObject?.updatedExisting) {
                     showSuccessMessage("🆗 Status Updated Successfully");
+                    refetch();
                 }
             })
             .catch((err) => {
@@ -45,32 +37,32 @@ const ManageClasses = () => {
         e.target.reset();
     };
 
-    const handleStatus = async (e) => {
+    const handleStatus = async (e, id) => {
         const status = e.target.value;
         const statusData = {
             status,
         };
 
-        if (status === "rejected") {
-            window.my_modal_5.showModal();
-        }
-
         if (status === "approved") {
             await axios
-                .patch(
-                    `http://localhost:8000/api/v1/classes/${statusId}`,
-                    statusData
-                )
+                .patch(`http://localhost:8000/api/v1/classes/${id}`, statusData)
                 .then((res) => {
-                    if (res?.status === 200) {
+                    if (res?.data?.lastErrorObject?.updatedExisting) {
                         showSuccessMessage("🆗 Status Updated Successfully");
+                        refetch();
                     }
                 })
                 .catch((err) => {
                     showErrorMessage(err.message);
                 });
+        } else if (status === "rejected") {
+            window.my_modal_5.showModal();
         }
     };
+
+    if (dbAllClassesLoading) {
+        return <Loading />;
+    }
 
     return (
         <div className="w-full overflow-x-auto">
@@ -93,7 +85,7 @@ const ManageClasses = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {classes.map((cls, index) => {
+                    {allClasses.map((cls, index) => {
                         return (
                             <tr key={cls._id}>
                                 <th>
@@ -136,11 +128,16 @@ const ManageClasses = () => {
                                 <th>
                                     <select
                                         onChange={(e) => {
-                                            handleStatus(e);
                                             setStatusId(cls?._id);
+                                            handleStatus(e, cls?._id);
                                         }}
                                         defaultValue={cls?.status}
-                                        className="w-full max-w-[130px] select select-sm  btn btn-sm btn-info text-white"
+                                        className={`w-full max-w-[130px] select select-sm  btn btn-sm btn-info text-white ${
+                                            (cls?.status === "approved" &&
+                                                "btn-success") ||
+                                            (cls?.status === "rejected" &&
+                                                "btn-error")
+                                        }`}
                                     >
                                         <option disabled value="pending">
                                             {cls?.status}
@@ -149,13 +146,13 @@ const ManageClasses = () => {
                                             value="approved"
                                             className="btn btn-sm btn-success "
                                         >
-                                            Approve
+                                            Approved
                                         </option>
                                         <option
                                             value="rejected"
                                             className="btn btn-sm btn-error "
                                         >
-                                            Reject
+                                            Rejected
                                         </option>
                                     </select>
                                 </th>
