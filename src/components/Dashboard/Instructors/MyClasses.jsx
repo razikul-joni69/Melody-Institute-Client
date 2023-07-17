@@ -11,7 +11,7 @@ const MyClasses = () => {
     }
     return (
         <div className="w-full overflow-x-auto">
-            <Titles title="My Classes" subTitle={"My All Classes"} />
+            <Titles title="All Classes" subTitle={"My All Classes"} />
             {dbCurrentInstructorClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead className="dark:text-white">
@@ -19,8 +19,8 @@ const MyClasses = () => {
                             <th>#</th>
                             <th>Image / Class Name</th>
                             <th>Price</th>
+                            <th>Total Seats</th>
                             <th>Instructor</th>
-                            <th>Feedback</th>
                             <th>Approved Status</th>
                         </tr>
                     </thead>
@@ -49,6 +49,9 @@ const MyClasses = () => {
                                         </div>
                                     </td>
                                     <th className="text-xl">$ {cls?.price}</th>
+                                    <th className="text-xl">
+                                        {cls?.total_seats}
+                                    </th>
                                     <td>
                                         <span className="font-bold">
                                             {cls?.instructor_name}
@@ -58,16 +61,6 @@ const MyClasses = () => {
                                             {cls?.instructor_email}
                                         </span>
                                     </td>
-                                    {cls?.feedback ? (
-                                        <td>
-                                            <textarea
-                                                value={cls?.feedback}
-                                                readOnly
-                                            ></textarea>
-                                        </td>
-                                    ) : (
-                                        <td></td>
-                                    )}
                                     <td>
                                         <button
                                             className={`btn btn-sm ${

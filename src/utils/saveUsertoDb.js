@@ -1,7 +1,7 @@
 import axios from "axios";
 import { showErrorMessage, showSuccessMessage } from "./Notification";
 
-const saveUserToDb = async (name, email, photoURL) => {
+const saveUserToDb = async (name, email, photoURL, ...rest) => {
     const user = {
         name,
         email,
@@ -9,10 +9,10 @@ const saveUserToDb = async (name, email, photoURL) => {
         total_students: 0,
         total_classes: 0,
         enrolled_courses: 0,
-        address: null,
-        gender: null,
-        phone: null,
-        role: "student",
+        address: rest[0]?.address || null,
+        gender: rest[0]?.gender || null,
+        phone: rest[0]?.phone || null,
+        role: rest[0]?.role || "student",
     };
 
     await axios

@@ -1,21 +1,24 @@
+/* eslint-disable react/prop-types */
 import { Rating } from "@smastrom/react-rating";
 import axios from "axios";
 import { useContext } from "react";
 import { BsBookHalf } from "react-icons/bs";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdOutlineEventSeat } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import useGetAllClasses from "../../hooks/useGetAllClasses";
+// import useGetAllClasses from "../../hooks/useGetAllClasses";
+import useGetCurrentUser from "../../hooks/useGetCurrentUser";
 import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
 import Loading from "../Loading/Loading";
 
-const ClassCard = () => {
-    const [, approvedClasses, , dbAllClassesLoading, refetch] =
-        useGetAllClasses();
+const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
+    console.log(approvedClasses);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
+    console.log(dbCurrentUser?.role);
 
     const handleSaveToCart = async (cls) => {
         if (!user) {
@@ -41,32 +44,56 @@ const ClassCard = () => {
             });
         }
 
-        const cartData = {
-            student_email: user?.email,
-            selected_classes: [cls],
-            enrolled_classes: [],
-        };
-        await axios
-            .get(`http://localhost:8000/api/v1/cart/${user?.email}`)
-            .then((res) => {
-                if (res?.data?.length) {
-                    const oldClasses = res?.data[0]?.selected_classes;
-                    const updateCartData = {
-                        classes: [...oldClasses, cls],
-                    };
-                    const exist = oldClasses.find(
-                        (oldCls) => oldCls._id === cls._id
-                    );
-                    if (!exist) {
+        if (user && dbCurrentUser?.role === "student") {
+            const cartData = {
+                student_email: user?.email,
+                selected_classes: [cls],
+                enrolled_classes: [],
+            };
+            await axios
+                .get(`http://localhost:8000/api/v1/cart/${user?.email}`)
+                .then((res) => {
+                    if (res?.data?.length) {
+                        const oldClasses = res?.data[0]?.selected_classes;
+                        const updateCartData = {
+                            classes: [...oldClasses, cls],
+                        };
+                        const exist = oldClasses.find(
+                            (oldCls) => oldCls._id === cls._id
+                        );
+                        if (!exist) {
+                            axios
+                                .patch(
+                                    `http://localhost:8000/api/v1/cart/${user?.email}?class_type=selected`,
+                                    updateCartData
+                                )
+                                .then((res) => {
+                                    if (
+                                        res?.data?.lastErrorObject
+                                            ?.updatedExisting
+                                    ) {
+                                        showSuccessMessage(
+                                            "👍 Class Added to cart!"
+                                        );
+                                        refetch();
+                                    }
+                                })
+                                .catch((err) => {
+                                    showErrorMessage(err.message);
+                                });
+                        } else {
+                            showErrorMessage(
+                                "Class already added to your cart!"
+                            );
+                        }
+                    } else {
                         axios
-                            .patch(
-                                `http://localhost:8000/api/v1/cart/${user?.email}?class_type=selected`,
-                                updateCartData
+                            .post(
+                                `http://localhost:8000/api/v1/cart/`,
+                                cartData
                             )
                             .then((res) => {
-                                if (
-                                    res?.data?.lastErrorObject?.updatedExisting
-                                ) {
+                                if (res?.data?.insertedId) {
                                     showSuccessMessage(
                                         "👍 Class Added to cart!"
                                     );
@@ -76,26 +103,18 @@ const ClassCard = () => {
                             .catch((err) => {
                                 showErrorMessage(err.message);
                             });
-                    } else {
-                        showErrorMessage("Class already added to your cart!");
                     }
-                } else {
-                    axios
-                        .post(`http://localhost:8000/api/v1/cart/`, cartData)
-                        .then((res) => {
-                            if (res?.data?.insertedId) {
-                                showSuccessMessage("👍 Class Added to cart!");
-                                refetch();
-                            }
-                        })
-                        .catch((err) => {
-                            showErrorMessage(err.message);
-                        });
-                }
-            })
-            .catch((err) => {
-                showErrorMessage(err.message);
+                })
+                .catch((err) => {
+                    showErrorMessage(err.message);
+                });
+        } else {
+            Swal.fire({
+                title: "You can not Enroll!",
+                text: "Only Student can Enroll Classes!",
+                icon: "warning",
             });
+        }
     };
 
     if (dbAllClassesLoading) {
@@ -130,7 +149,10 @@ const ClassCard = () => {
                                             : "text-white"
                                     }  truncate dark:text-white`}
                                 >
-                                    {cls.instructor_name} (Instructor)
+                                    {cls.instructor_name}{" "}
+                                    <span className="badge dark:badge-accent dark:text-white ">
+                                        Instructor
+                                    </span>
                                 </p>
                                 <p
                                     className={`text-sm  ${
@@ -171,9 +193,17 @@ const ClassCard = () => {
                                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                                         >
                                             <li>
-                                                <Link to="/user/profile">
+                                                <button
+                                                    onClick={() => {
+                                                        Swal.fire({
+                                                            icon: "warning",
+                                                            title: "Feature not implimented yet!",
+                                                            text: "This feature will be implimented soon.",
+                                                        });
+                                                    }}
+                                                >
                                                     Instructor Profile
-                                                </Link>
+                                                </button>
                                             </li>
                                         </ul>
                                     </div>
@@ -286,10 +316,12 @@ const ClassCard = () => {
                                     className={`${
                                         cls?.available_seats > 0
                                             ? "btn-success"
-                                            : "btn-warning disabled opacity-50 cursor-not-allowed"
+                                            : "btn-warning disabled text-white cursor-not-allowed"
                                     } btn btn-sm text-white`}
                                 >
-                                    Add to Cart
+                                    {cls?.available_seats > 0
+                                        ? "Add to Cart"
+                                        : "Class Booked"}
                                 </button>
                             </div>
                         </div>

@@ -44,7 +44,7 @@ const Navbar = () => {
                     to={"/home"}
                     className="text-xl normal-case btn btn-ghost dark:text-white"
                 >
-                    Melody Institute
+                    Melody <span className="hidden sm:inline">Institute</span>
                 </NavLink>
             </div>
             <div className="hidden navbar-center lg:flex">

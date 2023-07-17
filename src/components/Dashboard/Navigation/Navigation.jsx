@@ -78,7 +78,7 @@ export const instructorNavigation = (
 
 export const adminNavigation = (
     <ul className="pt-2 pb-4 space-y-1 text-lg">
-        <li className="text-gray-900 bg-gray-100">
+        <li className="">
             <NavLink
                 to="/dashboard/manage-classes"
                 className="flex items-center p-2 space-x-3 rounded-md btn-ghost"

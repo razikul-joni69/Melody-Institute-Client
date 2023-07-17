@@ -28,7 +28,7 @@ const HeroSection = () => {
                             scratch. We don't just tech you, we feel you the
                             rhythm. Lets start your journey with us.
                         </p>
-                        <button className="btn">
+                        <button id="classes" className="btn">
                             Explore Courses{" "}
                             <svg
                                 className="w-5 h-5 ml-2 -mr-1"
@@ -50,7 +50,7 @@ const HeroSection = () => {
                             grabCursor={true}
                             autoplay={true}
                             modules={[EffectCards, Autoplay]}
-                            className="mySwiper"
+                            className="mySwipe"
                         >
                             {images.map((img, index) => (
                                 <SwiperSlide key={index}>

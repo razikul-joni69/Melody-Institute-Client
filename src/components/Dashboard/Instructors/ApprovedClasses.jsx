@@ -1,11 +1,23 @@
+import { useEffect, useState } from "react";
 import useGetAllClasses from "../../../hooks/useGetAllClasses";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import Loading from "../../Loading/Loading";
 import Titles from "../../Titles/Titles";
 
 const ApprovedClasses = () => {
     const [, approvedClasses, , dbAllClassesLoading, ,] = useGetAllClasses();
+    const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
+    const [currentUserApprovedClasses, setCurrentUserApprovedClasses] =
+        useState([]);
 
-    if (dbAllClassesLoading) {
+    useEffect(() => {
+        let classes = approvedClasses.filter(
+            (cls) => cls?.instructor_email == dbCurrentUser?.email && cls
+        );
+        setCurrentUserApprovedClasses(classes);
+    }, [approvedClasses, dbCurrentUser?.email]);
+
+    if (dbAllClassesLoading || dbCurrentUserLoading) {
         return <Loading />;
     }
 
@@ -15,7 +27,7 @@ const ApprovedClasses = () => {
                 title="Approved Classes"
                 subTitle={"Your All Approved Classes"}
             />
-            {approvedClasses?.length > 0 ? (
+            {currentUserApprovedClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead className="dark:text-white">
                         <tr>
@@ -29,7 +41,7 @@ const ApprovedClasses = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {approvedClasses?.map((cls, index) => {
+                        {currentUserApprovedClasses?.map((cls, index) => {
                             return (
                                 <tr key={cls._id}>
                                     <th>

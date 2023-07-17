@@ -47,15 +47,17 @@ const AddClass = () => {
                                     showSuccessMessage(
                                         "🏛️ Class Created Successfully!"
                                     );
-                                    axios.patch(
-                                        `http://localhost:8000/api/v1/users/${user?.email}?addNewClass=true`
-                                    ).then((res) => {
-                                        // navigate("/user/profile");
-                                        console.log(res?.data);
-
-                                    }).catch((err) => {
-                                        showErrorMessage(err.message);
-                                    })
+                                    axios
+                                        .patch(
+                                            `http://localhost:8000/api/v1/users/${user?.email}?addNewClass=true`
+                                        )
+                                        .then((res) => {
+                                            // navigate("/user/profile");
+                                            console.log(res?.data);
+                                        })
+                                        .catch((err) => {
+                                            showErrorMessage(err.message);
+                                        });
                                 }
                             })
                             .catch((err) => {
@@ -198,7 +200,7 @@ const AddClass = () => {
                                     className="w-full px-3 py-2 mt-1 mb-5 text-sm border rounded-lg dark:text-white dark:bg-slate-700"
                                 />
                             </div>
-                            <div className="sm:col-span-2">
+                            <div className="col-span-2">
                                 <label
                                     htmlFor="description"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

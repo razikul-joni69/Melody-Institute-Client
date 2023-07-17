@@ -1,11 +1,23 @@
+import { useEffect, useState } from "react";
 import useGetAllClasses from "../../../hooks/useGetAllClasses";
+import useGetCurrentUser from "../../../hooks/useGetCurrentUser";
 import Loading from "../../Loading/Loading";
 import Titles from "../../Titles/Titles";
 
 const RejectedClasses = () => {
     const [, , rejectedClasses, dbAllClassesLoading, ,] = useGetAllClasses();
+    const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
+    const [currentUserRejectedClasses, setCurrentUserRejectedClasses] =
+        useState([]);
 
-    if (dbAllClassesLoading) {
+    useEffect(() => {
+        let classes = rejectedClasses.filter(
+            (cls) => cls?.instructor_email == dbCurrentUser?.email && cls
+        );
+        setCurrentUserRejectedClasses(classes);
+    }, [rejectedClasses, dbCurrentUser?.email]);
+
+    if (dbAllClassesLoading || dbCurrentUserLoading) {
         return <Loading />;
     }
 
@@ -15,7 +27,7 @@ const RejectedClasses = () => {
                 title="Rejected Classes"
                 subTitle={"Your All Rejected Classes"}
             />
-            {rejectedClasses?.length > 0 ? (
+            {currentUserRejectedClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead className="dark:text-white">
                         <tr>
@@ -28,7 +40,7 @@ const RejectedClasses = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {rejectedClasses?.map((cls, index) => {
+                        {currentUserRejectedClasses?.map((cls, index) => {
                             return (
                                 <tr key={cls._id}>
                                     <th>

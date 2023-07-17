@@ -20,10 +20,10 @@ const ManageUsers = () => {
             .patch(`http://localhost:8000/api/v1/users?id=${id}`, roleData)
             .then((res) => {
                 if (res?.data?.lastErrorObject?.updatedExisting) {
-                    showSuccessMessage("🆗 Status Updated Successfully");
+                    showSuccessMessage("🆗 Role Updated Successfully");
                     refetch();
                 } else {
-                    showErrorMessage("Can not update");
+                    showErrorMessage("Can not update Role");
                 }
             })
             .catch((err) => {
@@ -97,6 +97,12 @@ const ManageUsers = () => {
                                     >
                                         <option disabled value="student">
                                             {user?.role}
+                                        </option>
+                                        <option
+                                            value="student"
+                                            className="btn btn-sm btn-success "
+                                        >
+                                            Student
                                         </option>
                                         <option
                                             value="instructor"

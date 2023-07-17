@@ -1,13 +1,13 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import useDbUsers from "../../hooks/useGetCurrentUser";
+import useGetCurrentUser from "../../hooks/useGetCurrentUser";
 import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
 import Loading from "../Loading/Loading";
 
 const UpdateUserProfile = () => {
     const navigate = useNavigate();
-    const [, dbCurrentUser, dbLoading] = useDbUsers();
+    const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
     const {
         register,
         handleSubmit,
@@ -33,7 +33,7 @@ const UpdateUserProfile = () => {
             });
     };
 
-    if (dbLoading) {
+    if (dbCurrentUserLoading) {
         return <Loading />;
     }
 

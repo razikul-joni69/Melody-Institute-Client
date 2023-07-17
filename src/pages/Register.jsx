@@ -87,7 +87,8 @@ const Register = () => {
                                             saveUserToDb(
                                                 res?.user?.displayName,
                                                 res?.user.email,
-                                                res?.user.photoURL
+                                                res?.user.photoURL,
+                                                userData
                                             );
                                         })
                                         .catch((err) => {
