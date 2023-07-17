@@ -16,11 +16,11 @@ const saveUserToDb = async (name, email, photoURL, ...rest) => {
     };
 
     await axios
-        .get(`http://localhost:8000/api/v1/users/${email}`)
+        .get(`https://melody-institute-server.vercel.app/api/v1/users/${email}`)
         .then((res) => {
             if (res?.data?.email !== email) {
                 axios
-                    .post(`http://localhost:8000/api/v1/users`, user)
+                    .post(`https://melody-institute-server.vercel.app/api/v1/users`, user)
                     .then((res) => {
                         if (res?.data.insertedId) {
                             showSuccessMessage(

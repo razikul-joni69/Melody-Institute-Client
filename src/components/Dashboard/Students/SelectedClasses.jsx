@@ -27,7 +27,7 @@ const SelectedClasses = () => {
             if (result.isConfirmed) {
                 axios
                     .delete(
-                        `http://localhost:8000/api/v1/cart?email=${user?.email}&id=${id}`
+                        `https://melody-institute-server.vercel.app/api/v1/cart?email=${user?.email}&id=${id}`
                     )
                     .then((res) => {
                         if (res?.data?.lastErrorObject?.updatedExisting) {

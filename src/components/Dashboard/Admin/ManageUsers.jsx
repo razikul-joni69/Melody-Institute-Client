@@ -17,7 +17,10 @@ const ManageUsers = () => {
         };
 
         await axios
-            .patch(`http://localhost:8000/api/v1/users?id=${id}`, roleData)
+            .patch(
+                `https://melody-institute-server.vercel.app/api/v1/users?id=${id}`,
+                roleData
+            )
             .then((res) => {
                 if (res?.data?.lastErrorObject?.updatedExisting) {
                     showSuccessMessage("🆗 Role Updated Successfully");

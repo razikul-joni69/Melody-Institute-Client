@@ -9,7 +9,9 @@ const useGetAllUsers = () => {
     } = useQuery({
         queryKey: ["dbAllUsers"],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:8000/api/v1/users`);
+            const res = await axios.get(
+                `https://melody-institute-server.vercel.app/api/v1/users`
+            );
             return res.data;
         },
     });

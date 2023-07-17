@@ -40,7 +40,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div className="dark:bg-[#1f2937] dark:text-white">
+        <div className="dark:bg-[#1f2937] sticky top-0 dark:text-white">
             <button
                 className={`${sidebarVisible ? "hidden" : "visible"}`}
                 onClick={toggleSidebar}
@@ -50,7 +50,7 @@ const Sidebar = () => {
                 )}{" "}
             </button>
 
-            <div className="dark:bg-[#1f2937] md:flex">
+            <div className="dark:bg-[#1f2937]  md:flex">
                 <Slide>
                     <div
                         id="sidebar"
@@ -164,8 +164,8 @@ const Sidebar = () => {
                         </div>
                     </div>
                 </Slide>
-                <div id="content" className={`flex-auto`}>
-                    <Slide direction="right">
+                <div id="content" className={`flex-auto pt-5`}>
+                    <Slide direction="right" className="">
                         <Outlet />
                     </Slide>
                 </div>

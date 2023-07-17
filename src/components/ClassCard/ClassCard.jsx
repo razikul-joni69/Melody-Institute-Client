@@ -7,18 +7,19 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { MdOutlineEventSeat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-// import useGetAllClasses from "../../hooks/useGetAllClasses";
 import useGetCurrentUser from "../../hooks/useGetCurrentUser";
 import { AuthContext } from "../../providers/AuthProvider";
 import { showErrorMessage, showSuccessMessage } from "../../utils/Notification";
 import Loading from "../Loading/Loading";
 
 const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
-    console.log(approvedClasses);
-    const { user } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
     const navigate = useNavigate();
     const [dbCurrentUser, dbCurrentUserLoading] = useGetCurrentUser();
-    console.log(dbCurrentUser?.role);
+
+    if (loading || dbCurrentUserLoading) {
+        return <Loading />;
+    }
 
     const handleSaveToCart = async (cls) => {
         if (!user) {
@@ -42,36 +43,76 @@ const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
                     });
                 }
             });
-        }
-
-        if (user && dbCurrentUser?.role === "student") {
-            const cartData = {
-                student_email: user?.email,
-                selected_classes: [cls],
-                enrolled_classes: [],
-            };
-            await axios
-                .get(`http://localhost:8000/api/v1/cart/${user?.email}`)
-                .then((res) => {
-                    if (res?.data?.length) {
-                        const oldClasses = res?.data[0]?.selected_classes;
-                        const updateCartData = {
-                            classes: [...oldClasses, cls],
-                        };
-                        const exist = oldClasses.find(
-                            (oldCls) => oldCls._id === cls._id
-                        );
-                        if (!exist) {
+        } else {
+            if (!(dbCurrentUser?.role === "student")) {
+                Swal.fire({
+                    title: "You can not Enroll!",
+                    text: "Only Student can Enroll Classes!",
+                    icon: "warning",
+                });
+            } else if (user && dbCurrentUser?.role === "student") {
+                const cartData = {
+                    student_email: user?.email,
+                    selected_classes: [cls],
+                    enrolled_classes: [],
+                };
+                await axios
+                    .get(
+                        `https://melody-institute-server.vercel.app/api/v1/cart/${user?.email}`
+                    )
+                    .then((res) => {
+                        if (res?.data?.length) {
+                            const oldClasses = res?.data[0]?.selected_classes;
+                            const oldClasses2 = res?.data[0]?.enrolled_classes;
+                            const updateCartData = {
+                                classes: [...oldClasses, cls],
+                            };
+                            const exist = oldClasses.find(
+                                (oldCls) => oldCls._id === cls._id
+                            );
+                            const exist2 = oldClasses2.find(
+                                (oldCls) => oldCls._id === cls._id
+                            );
+                            if (!exist && !exist2) {
+                                axios
+                                    .patch(
+                                        `https://melody-institute-server.vercel.app/api/v1/cart/${user?.email}?class_type=selected`,
+                                        updateCartData
+                                    )
+                                    .then((res) => {
+                                        if (
+                                            res?.data?.lastErrorObject
+                                                ?.updatedExisting
+                                        ) {
+                                            showSuccessMessage(
+                                                "👍 Class Added to cart!"
+                                            );
+                                            refetch();
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        showErrorMessage(err.message);
+                                    });
+                            } else {
+                                if (exist) {
+                                    showErrorMessage(
+                                        "Class already added to your cart!"
+                                    );
+                                }
+                                if (exist2) {
+                                    showErrorMessage(
+                                        "You already enrolled to this class!"
+                                    );
+                                }
+                            }
+                        } else {
                             axios
-                                .patch(
-                                    `http://localhost:8000/api/v1/cart/${user?.email}?class_type=selected`,
-                                    updateCartData
+                                .post(
+                                    `https://melody-institute-server.vercel.app/api/v1/cart/`,
+                                    cartData
                                 )
                                 .then((res) => {
-                                    if (
-                                        res?.data?.lastErrorObject
-                                            ?.updatedExisting
-                                    ) {
+                                    if (res?.data?.insertedId) {
                                         showSuccessMessage(
                                             "👍 Class Added to cart!"
                                         );
@@ -81,39 +122,12 @@ const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
                                 .catch((err) => {
                                     showErrorMessage(err.message);
                                 });
-                        } else {
-                            showErrorMessage(
-                                "Class already added to your cart!"
-                            );
                         }
-                    } else {
-                        axios
-                            .post(
-                                `http://localhost:8000/api/v1/cart/`,
-                                cartData
-                            )
-                            .then((res) => {
-                                if (res?.data?.insertedId) {
-                                    showSuccessMessage(
-                                        "👍 Class Added to cart!"
-                                    );
-                                    refetch();
-                                }
-                            })
-                            .catch((err) => {
-                                showErrorMessage(err.message);
-                            });
-                    }
-                })
-                .catch((err) => {
-                    showErrorMessage(err.message);
-                });
-        } else {
-            Swal.fire({
-                title: "You can not Enroll!",
-                text: "Only Student can Enroll Classes!",
-                icon: "warning",
-            });
+                    })
+                    .catch((err) => {
+                        showErrorMessage(err.message);
+                    });
+            }
         }
     };
 
@@ -137,7 +151,7 @@ const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
                             <div className="flex-shrink-0">
                                 <img
                                     className="rounded-full w-14 h-14"
-                                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                                    src={cls?.instructor_img}
                                     alt="Bonnie image"
                                 />
                             </div>
@@ -197,8 +211,8 @@ const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
                                                     onClick={() => {
                                                         Swal.fire({
                                                             icon: "warning",
-                                                            title: "Feature not implimented yet!",
-                                                            text: "This feature will be implimented soon.",
+                                                            title: "Feature not implemented yet!",
+                                                            text: "This feature will be implemented soon.",
                                                         });
                                                     }}
                                                 >
@@ -214,8 +228,8 @@ const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
                         <div className="relative">
                             <a className="relative" href="#">
                                 <img
-                                    className="rounded-t-lg "
-                                    src="https://flowbite.com/docs/images/products/apple-watch.png"
+                                    className="rounded-t-lg h-60"
+                                    src={cls?.img}
                                     alt="product image"
                                 />
                             </a>
@@ -287,7 +301,7 @@ const ClassCard = ({ approvedClasses, dbAllClassesLoading, refetch }) => {
                                         : "text-white"
                                 } text-xl font-semibold tracking-tight dark:text-white`}
                             >
-                                <h4>{cls?.class_Name}</h4>
+                                <h4>{cls?.class_name}</h4>
                                 <h4>${cls?.price}</h4>
                             </div>
                             <div

@@ -6,12 +6,15 @@ import useGetAllClasses from "../hooks/useGetAllClasses";
 const Classes = () => {
     const [, approvedClasses, , dbAllClassesLoading, refetch] =
         useGetAllClasses();
+
+    document.title = "Melody Institute | Classes";
+
     return (
         <div className="py-10 dark:bg-[#111827]">
             <Zoom>
                 <Titles
                     title="All Classes"
-                    subTitle="All of your favourite classes is here."
+                    subTitle="All of your favorite classes is here."
                 />
             </Zoom>
             <Slide direction="down">

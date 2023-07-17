@@ -21,7 +21,7 @@ const ManageClasses = () => {
 
         await axios
             .patch(
-                `http://localhost:8000/api/v1/classes/${statusId}`,
+                `https://melody-institute-server.vercel.app/api/v1/classes/${statusId}`,
                 rejectionData
             )
             .then((res) => {
@@ -45,7 +45,10 @@ const ManageClasses = () => {
 
         if (status === "approved") {
             await axios
-                .patch(`http://localhost:8000/api/v1/classes/${id}`, statusData)
+                .patch(
+                    `https://melody-institute-server.vercel.app/api/v1/classes/${id}`,
+                    statusData
+                )
                 .then((res) => {
                     if (res?.data?.lastErrorObject?.updatedExisting) {
                         showSuccessMessage("🆗 Status Updated Successfully");

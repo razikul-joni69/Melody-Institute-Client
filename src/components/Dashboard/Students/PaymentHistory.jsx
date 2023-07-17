@@ -4,6 +4,7 @@ import Titles from "../../Titles/Titles";
 
 const PaymentHistory = () => {
     const [, enrolled_classes, dbLoading] = useGetCart();
+    const enrolledClasses = [...enrolled_classes].reverse();
 
     if (dbLoading) {
         return <Loading />;
@@ -15,7 +16,7 @@ const PaymentHistory = () => {
                 title="Payment History"
                 subTitle={"Your Enrolled Classes Payment History"}
             />
-            {enrolled_classes?.length > 0 ? (
+            {enrolledClasses?.length > 0 ? (
                 <table className="table table-zebra">
                     <thead className="dark:text-white">
                         <tr>
@@ -24,11 +25,11 @@ const PaymentHistory = () => {
                             <th>Instructor</th>
                             <th>Payment Status</th>
                             <th>Payment Ammount</th>
-                            <th>Transection Id</th>
+                            <th>Transaction Id</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {enrolled_classes?.map((cls, index) => {
+                        {enrolledClasses?.map((cls, index) => {
                             return (
                                 <tr key={cls._id}>
                                     <th>

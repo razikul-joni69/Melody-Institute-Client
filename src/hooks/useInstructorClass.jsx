@@ -15,7 +15,7 @@ const useInstructorClasse = () => {
         enabled: !loading,
         queryFn: async () => {
             const res = await axios.get(
-                `http://localhost:8000/api/v1/classes/${user?.email}`
+                `https://melody-institute-server.vercel.app/api/v1/classes/${user?.email}`
             );
             return res.data;
         },

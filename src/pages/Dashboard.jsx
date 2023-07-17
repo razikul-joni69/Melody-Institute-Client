@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import Sidebar from "../components/Dashboard/Sidebar/Sidebar.jsx";
-import { AuthContext } from "../providers/AuthProvider";
 
 const Dashboard = () => {
+    document.title = "Melody Institute | Dashboard";
     return (
         <div>
             <Sidebar />

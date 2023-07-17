@@ -114,4 +114,5 @@ const RejectedClasses = () => {
         </div>
     );
 };
+
 export default RejectedClasses;

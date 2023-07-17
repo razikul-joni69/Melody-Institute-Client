@@ -4,6 +4,7 @@ import PopularInstructors from "../components/PopularInstructors/PopularInstruct
 import Reviews from "../components/Reviews/Reviews.jsx";
 
 const Home = () => {
+    document.title = "Melody Institute | Home";
     return (
         <div className="space-y-32">
             <HeroSection />

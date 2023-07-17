@@ -11,19 +11,19 @@ const UserProfile = () => {
     }
 
     return (
-        <div className="dark:bg-[#111827] dark:text-white pb-16">
+        <div className="pt-10 pb-16 dark:bg-slate-800 dark:text-white">
             <Titles title="User Profile" />
             <div className="">
-                <div className="max-w-sm mx-auto bg-white dark:bg-[#1f2937] dark:text-white rounded-lg overflow-hidden shadow-lg">
+                <div className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-slate-700 dark:text-white">
                     <div className="px-4 pb-6">
-                        <div className="text-center my-4">
+                        <div className="my-4 text-center">
                             <img
-                                className="h-32 w-32 rounded-full border-4 border-white mx-auto my-4"
+                                className="w-32 h-32 mx-auto my-4 border-4 border-white rounded-full"
                                 src={dbCurrentUser?.photoURL}
                                 alt=""
                             />
                             <div className="py-2 ">
-                                <h3 className="font-bold text-2xl mb-1">
+                                <h3 className="mb-1 text-2xl font-bold">
                                     {dbCurrentUser?.name}
                                 </h3>
                                 <div className="text-gray-700 dark:text-white">
@@ -93,20 +93,20 @@ const UserProfile = () => {
                         <div className="flex justify-center gap-2 px-2">
                             {dbCurrentUser?.role === "instructor" && (
                                 <Link to="/dashboard/my-classes">
-                                    <button className="flex-1 rounded-full bg-blue-600 text-white antialiased font-bold hover:bg-blue-800 px-4 py-2">
+                                    <button className="flex-1 px-4 py-2 antialiased font-bold text-white bg-blue-600 rounded-full hover:bg-blue-800">
                                         My Classes
                                     </button>
                                 </Link>
                             )}
                             {dbCurrentUser?.role === "student" && (
                                 <Link to="/dashboard/enrolled-classes">
-                                    <button className="flex-1 rounded-full bg-blue-600 text-white antialiased font-bold hover:bg-blue-800 px-4 py-2">
+                                    <button className="flex-1 px-4 py-2 antialiased font-bold text-white bg-blue-600 rounded-full hover:bg-blue-800">
                                         My Classes
                                     </button>
                                 </Link>
                             )}
                             <Link to="/user/profile/update">
-                                <button className="flex-1 rounded-full bg-blue-600 text-white antialiased font-bold hover:bg-blue-800 px-4 py-2">
+                                <button className="flex-1 px-4 py-2 antialiased font-bold text-white bg-blue-600 rounded-full hover:bg-blue-800">
                                     Update Profile
                                 </button>
                             </Link>

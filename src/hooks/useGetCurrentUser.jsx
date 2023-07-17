@@ -11,7 +11,7 @@ const useDbUsers = () => {
         enabled: !loading,
         queryFn: async () => {
             const res = await axios.get(
-                `http://localhost:8000/api/v1/users/${user?.email}`
+                `https://melody-institute-server.vercel.app/api/v1/users/${user?.email}`
             );
             return res.data;
         },

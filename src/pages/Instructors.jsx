@@ -8,6 +8,8 @@ const Instructors = () => {
     const [dbAllUsers, dbAllUsersLoading] = useGetAllUsers();
     const [instructors, setInstructors] = useState([]);
 
+    document.title = "Melody Institute | Instructors";
+
     useEffect(() => {
         const instrac = dbAllUsers?.filter(
             (ins) => ins?.role === "instructor" && ins

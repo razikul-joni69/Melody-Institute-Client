@@ -12,7 +12,9 @@ const useGetAllClasses = () => {
     } = useQuery({
         queryKey: ["allClasses"],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:8000/api/v1/classes`);
+            const res = await axios.get(
+                `https://melody-institute-server.vercel.app/api/v1/classes`
+            );
             const approved = res?.data?.filter(
                 (cls) => cls?.status === "approved" && cls
             );

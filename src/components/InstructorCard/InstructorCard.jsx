@@ -43,16 +43,18 @@ const InstructorCard = ({ instructors, dbAllUsersLoading }) => {
                                     )}
                                 </div>
                                 <div className="flex justify-between gap-5 my-2">
-                                    <div className="flex items-center gap-1 text-[15px] text-gray-600">
+                                    <div className="flex items-center gap-1 text-[15px] text-gray-600 dark:text-white">
                                         <MdPlayLesson className="text-red-700 text-[20px]" />{" "}
-                                        {instructor?.total_classes}{" "}
+                                        <span>{instructor?.total_classes}</span>
                                         {instructor?.total_classes > 1
                                             ? "Classes"
                                             : "Class"}
                                     </div>
-                                    <div className="flex items-center gap-1 text-[15px] text-gray-600">
+                                    <div className="flex items-center gap-1 text-[15px] text-gray-600 dark:text-white">
                                         <FaUser className="text-red-700 text-[20px]" />{" "}
-                                        {instructor?.total_students}{" "}
+                                        <span>
+                                            {instructor?.total_students}
+                                        </span>
                                         {instructor?.total_students > 1
                                             ? "Student's"
                                             : "Student"}
@@ -61,7 +63,7 @@ const InstructorCard = ({ instructors, dbAllUsersLoading }) => {
                             </div>
                         ) : (
                             <div className="text-red-500">
-                                Currently taking no Class
+                                Currently No Class Available
                             </div>
                         )}
                         <div className="flex mt-2 space-x-3">
@@ -98,4 +100,5 @@ const InstructorCard = ({ instructors, dbAllUsersLoading }) => {
         </div>
     );
 };
+
 export default InstructorCard;

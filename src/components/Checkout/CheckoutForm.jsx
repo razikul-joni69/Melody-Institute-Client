@@ -39,13 +39,15 @@ const Payment = () => {
     useEffect(() => {
         setDbLoading(true);
         axios
-            .get(`http://localhost:8000/api/v1/classes?classId=${classId}`)
+            .get(
+                `https://melody-institute-server.vercel.app/api/v1/classes?classId=${classId}`
+            )
             .then((res) => {
                 setCls(res?.data[0]);
                 setDbLoading(false);
                 axios
                     .post(
-                        "http://localhost:8000/api/v1/create-payment-intent",
+                        "https://melody-institute-server.vercel.app/api/v1/create-payment-intent",
                         {
                             price: res?.data[0]?.price,
                         }
@@ -64,7 +66,9 @@ const Payment = () => {
 
     const handleUpdateCart = async () => {
         await axios
-            .get(`http://localhost:8000/api/v1/cart/${user?.email}`)
+            .get(
+                `https://melody-institute-server.vercel.app/api/v1/cart/${user?.email}`
+            )
             .then((res) => {
                 if (res?.data?.length) {
                     const oldClasses = res?.data[0]?.enrolled_classes;
@@ -77,7 +81,7 @@ const Payment = () => {
                     if (!exist) {
                         axios
                             .patch(
-                                `http://localhost:8000/api/v1/cart/${user?.email}?class_type=enrolled&id=${cls?._id}`,
+                                `https://melody-institute-server.vercel.app/api/v1/cart/${user?.email}?class_type=enrolled&id=${cls?._id}`,
                                 updateCartData
                             )
                             .then((res) => {
@@ -98,7 +102,10 @@ const Payment = () => {
                     }
                 } else {
                     axios
-                        .post(`http://localhost:8000/api/v1/cart/`, cls)
+                        .post(
+                            `https://melody-institute-server.vercel.app/api/v1/cart/`,
+                            cls
+                        )
                         .then((res) => {
                             if (res?.data?.lastErrorObject?.updatedExisting) {
                                 showSuccessMessage("👍 Enrolled New Class!");
@@ -134,14 +141,8 @@ const Payment = () => {
         });
 
         if (error) {
-            console.log("[error]", error);
             showErrorMessage(error.message);
         }
-        // else {
-        //     console.log("[PaymentMethod]", paymentMethod);
-        //     showSuccessMessage("🆗 Payment Successfull");
-        //     // TODO: Payment successfull do backend call
-        // }
 
         setProcessing(true);
 
@@ -178,7 +179,7 @@ const Payment = () => {
     }
     return (
         <div className="grid w-full mt-5 space-y-5 justify-items-center">
-            <div className="flex flex-col items-center rounded-lg shadow order-gray-200 mborder g-white md:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <div className="flex flex-col items-center border rounded-lg shadow order-gray-200 g-white md:flex-row hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <img
                     className="object-cover w-full h-full rounded-t-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
                     src={cls?.img}
@@ -211,7 +212,7 @@ const Payment = () => {
                     }}
                 />
                 <button
-                    className="text-white btn btn-success"
+                    className="text-white btn btn-success dark:btn-success"
                     type="submit"
                     disabled={!stripe || !clientSecret || processing}
                 >
@@ -221,4 +222,3 @@ const Payment = () => {
         </div>
     );
 };
-// export default Payment;

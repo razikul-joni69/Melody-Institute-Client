@@ -8,7 +8,7 @@ const Navbar = () => {
     const routes = ["Home", "Instructors", "Classes", "Dashboard"];
 
     return (
-        <div className="navbar bg-base-100">
+        <div className="sticky top-0 z-50 navbar dark:bg-slate-800 backdrop-blur-xl">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -48,7 +48,7 @@ const Navbar = () => {
                 </NavLink>
             </div>
             <div className="hidden navbar-center lg:flex">
-                <ul className="px-1 menu menu-horizontal  dark:text-white ">
+                <ul className="px-1 menu menu-horizontal dark:text-white ">
                     {routes.map((route, index) => (
                         <li key={index}>
                             <NavLink to={route.toLowerCase()}>{route}</NavLink>
@@ -125,7 +125,7 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li
-                                className="dark:hover:bg-white dark:hover:text-black rounded-lg"
+                                className="rounded-lg dark:hover:bg-white dark:hover:text-black"
                                 onClick={() => logOut()}
                             >
                                 <a>LogOut</a>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider.jsx";
 import {
     showErrorMessage,
@@ -9,10 +10,12 @@ import {
 
 const AddClass = () => {
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -41,7 +44,10 @@ const AddClass = () => {
                     if (img.status === 200) {
                         data.img = img?.data?.data?.display_url;
                         axios
-                            .post("http://localhost:8000/api/v1/classes", data)
+                            .post(
+                                "https://melody-institute-server.vercel.app/api/v1/classes",
+                                data
+                            )
                             .then((res) => {
                                 if (res?.data?.insertedId) {
                                     showSuccessMessage(
@@ -49,11 +55,11 @@ const AddClass = () => {
                                     );
                                     axios
                                         .patch(
-                                            `http://localhost:8000/api/v1/users/${user?.email}?addNewClass=true`
+                                            `https://melody-institute-server.vercel.app/api/v1/users/${user?.email}?addNewClass=true`
                                         )
                                         .then((res) => {
-                                            // navigate("/user/profile");
-                                            console.log(res?.data);
+                                            reset();
+                                            navigate("/dashboard/all-classes");
                                         })
                                         .catch((err) => {
                                             showErrorMessage(err.message);
@@ -99,7 +105,7 @@ const AddClass = () => {
                             </div>
                             <div className="w-full">
                                 <label
-                                    htmlFor="instructor_emamil"
+                                    htmlFor="instructor_email"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >
                                     Instructor Email
@@ -108,7 +114,7 @@ const AddClass = () => {
                                     value={user?.email}
                                     disabled
                                     type="email"
-                                    id="instructor_emamil"
+                                    id="instructor_email"
                                     className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 />
                             </div>
@@ -185,13 +191,6 @@ const AddClass = () => {
                                 >
                                     Upload relevant class image
                                 </label>
-                                {/* <input
-                                    {...register("img")}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    id="multiple_files"
-                                    type="file"
-                                    required
-                                /> */}
                                 <input
                                     {...register("img", {
                                         required: true,
@@ -219,7 +218,7 @@ const AddClass = () => {
                         </div>
                         <input
                             type="submit"
-                            className="mt-4 text-w hite btn btn-success"
+                            className="mt-4 text-white btn btn-success"
                             value="Add Class"
                         />
                     </form>

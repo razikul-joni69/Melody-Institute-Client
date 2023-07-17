@@ -17,7 +17,7 @@ const UpdateUserProfile = () => {
     const onSubmit = async (data) => {
         axios
             .patch(
-                `http://localhost:8000/api/v1/users/${dbCurrentUser?.email}`,
+                `https://melody-institute-server.vercel.app/api/v1/users/${dbCurrentUser?.email}`,
                 data
             )
             .then((res) => {
@@ -63,7 +63,7 @@ const UpdateUserProfile = () => {
                             </div>
                             <div className="w-full">
                                 <label
-                                    htmlFor="instructor_emamil"
+                                    htmlFor="instructor_email"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                 >
                                     User Email
@@ -72,14 +72,14 @@ const UpdateUserProfile = () => {
                                     value={dbCurrentUser?.email}
                                     disabled
                                     type="email"
-                                    id="instructor_emamil"
+                                    id="instructor_email"
                                     className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 />
                             </div>
                             {dbCurrentUser?.role === "student" && (
                                 <div className="w-full">
                                     <label
-                                        htmlFor="instructor_emamil"
+                                        htmlFor="enrolled_courses"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
                                         Enrolled Courses
@@ -88,7 +88,7 @@ const UpdateUserProfile = () => {
                                         value={dbCurrentUser?.enrolled_courses}
                                         disabled
                                         type="email"
-                                        id="instructor_emamil"
+                                        id="enrolled_courses"
                                         className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     />
                                 </div>
@@ -114,7 +114,7 @@ const UpdateUserProfile = () => {
                                     </div>
                                     <div className="w-full">
                                         <label
-                                            htmlFor="instructor_emamil"
+                                            htmlFor="total_classes"
                                             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                         >
                                             Total Classes
@@ -123,7 +123,7 @@ const UpdateUserProfile = () => {
                                             value={dbCurrentUser?.total_classes}
                                             disabled
                                             type="email"
-                                            id="instructor_emamil"
+                                            id="total_classes"
                                             className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         />
                                     </div>
@@ -182,34 +182,10 @@ const UpdateUserProfile = () => {
                                     <option value="other">Other</option>
                                 </select>
                             </div>
-                            {/* <div className="w-full">
-                                <label
-                                    htmlFor="gender"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                    User Role
-                                </label>
-                                <select
-                                    defaultValue={dbCurrentUser?.role}
-                                    id="gender"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    {...register("role")}
-                                >
-                                    <option disabled selected>
-                                        {dbCurrentUser?.role
-                                            ? dbCurrentUser?.role
-                                            : "Select Role"}
-                                    </option>
-                                    <option value="instructor">
-                                        Instructor
-                                    </option>
-                                    <option value="student">Student</option>
-                                </select>
-                            </div> */}
                         </div>
                         <input
                             type="submit"
-                            className="mt-4 text-w hite btn btn-success"
+                            className="mt-4 text-white btn btn-success"
                             value="Update User"
                         />
                     </form>
@@ -218,4 +194,5 @@ const UpdateUserProfile = () => {
         </div>
     );
 };
+
 export default UpdateUserProfile;

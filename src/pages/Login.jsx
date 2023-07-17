@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Providers/AuthProvider";
+import { AuthContext } from "../providers/AuthProvider";
 import { showErrorMessage, showSuccessMessage } from "../utils/Notification";
 import saveUserToDb from "../utils/saveUsertoDb";
 

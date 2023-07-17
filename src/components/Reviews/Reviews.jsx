@@ -17,6 +17,7 @@ const Reviews = () => {
             .then((res) => res.json())
             .then((data) => setReviews(data));
     }, []);
+    
     return (
         <div>
             <Bounce>

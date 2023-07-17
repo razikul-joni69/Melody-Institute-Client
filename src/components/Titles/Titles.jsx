@@ -13,4 +13,5 @@ const Titles = ({ title, subTitle }) => {
         </div>
     );
 };
+
 export default Titles;

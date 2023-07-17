@@ -12,7 +12,9 @@ const useGetCart = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/api/v1/cart/${user?.email}`)
+            .get(
+                `https://melody-institute-server.vercel.app/api/v1/cart/${user?.email}`
+            )
             .then((res) => {
                 setSelectedClasses(res?.data[0]?.selected_classes);
                 setEnrolledClasses(res?.data[0]?.enrolled_classes);

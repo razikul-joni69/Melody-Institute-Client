@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../../../Assignment-11/client/src/components/Loading/Loading.jsx";
-import { AuthContext, auth } from "../Providers/AuthProvider";
+import { AuthContext, auth } from "../providers/AuthProvider.jsx";
 import { showErrorMessage, showSuccessMessage } from "../utils/Notification";
 import saveUserToDb from "../utils/saveUsertoDb.js";
 
