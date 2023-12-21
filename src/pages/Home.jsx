@@ -2,6 +2,7 @@ import HeroSection from "../components/HeroSection/HeroSection.jsx";
 import PopularClasses from "../components/PopularClasses/PopularClasses.jsx";
 import PopularInstructors from "../components/PopularInstructors/PopularInstructors.jsx";
 import Reviews from "../components/Reviews/Reviews.jsx";
+import UpcomingEvents from "../components/UpcomingEvents/UpcomingEvents.jsx";
 
 const Home = () => {
     document.title = "Melody Institute | Home";
@@ -10,6 +11,7 @@ const Home = () => {
             <HeroSection />
             <PopularClasses />
             <PopularInstructors />
+            <UpcomingEvents/>
             <Reviews />
         </div>
     );
