@@ -1,3 +1,4 @@
+import AboutUs from "../components/AboutUs/AboutUs.jsx";
 import HeroSection from "../components/HeroSection/HeroSection.jsx";
 import PopularClasses from "../components/PopularClasses/PopularClasses.jsx";
 import PopularInstructors from "../components/PopularInstructors/PopularInstructors.jsx";
@@ -12,6 +13,7 @@ const Home = () => {
             <PopularClasses />
             <PopularInstructors />
             <UpcomingEvents/>
+            <AboutUs/>
             <Reviews />
         </div>
     );
